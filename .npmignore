@@ -1,0 +1,7 @@
+src/
+docs/
+spec/
+test/
+examples/
+quo.png
+tsconfig.json
