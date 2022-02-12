@@ -72,16 +72,20 @@ export class Scanner {
 
     private comments() {
         if (this.peek() === ";" && this.peekNext() === ";") {
+            const start = new Token(TokenType.Eof, ";;;", ";;;", this.line, this.col);
+
             this.advance(), this.advance();
 
             while (!(this.peek() === ";" && this.peekNext() === ";" && this.peekNextNext() === ";") && !this.isAtEnd()) {
-                if (this.peek() === "\n") this.line++;
+                if (this.peek() === "\n") {
+                    this.line++;
+                    this.col = 1;
+                }
 
                 this.advance();
             }
 
-            if (this.isAtEnd())
-                throw new QuoSyntaxError(this.source, this.tokens[this.tokens.length - 1], "Unterminated comment.");
+            if (this.isAtEnd()) throw new QuoSyntaxError(this.source, start, "Unterminated comment.");
 
             this.advance();
 
@@ -90,13 +94,11 @@ export class Scanner {
     }
 
     private string() {
-        while (this.peek() !== '"' && !this.isAtEnd()) {
-            if (this.peek() === "\n") this.line++;
+        const start = new Token(TokenType.Eof, '"', '"', this.line, this.col);
 
-            this.advance();
-        }
+        while (this.peek() !== '"' && !this.isAtEnd() && this.peek() !== "\n") this.advance();
 
-        if (this.isAtEnd()) throw new QuoSyntaxError(this.source, this.tokens[this.tokens.length - 1], "Unterminated string.");
+        if (this.isAtEnd() || this.peek() === "\n") throw new QuoSyntaxError(this.source, start, "Unterminated string.");
 
         this.advance();
 

@@ -5,7 +5,9 @@ function formatstack(this: Error, interpreter: Interpreter, token: Token) {
     const { source, callstack } = interpreter;
 
     return `\
-${token.line} | ${source.split("\n")[token.line - 1]}
+${token.line === 1 ? "" : `${token.line - 1} | ${source.split("\n")[token.line - 1 - 1]}\n`}${token.line} | ${
+        source.split("\n")[token.line - 1]
+    }
 ${" ".repeat(Math.log10(token.line) + 3 + token.col)}${token.lexeme.length === 1 ? "^" : "~".repeat(token.lexeme.length)}
 ${this.name}: ${this.message}
 ${callstack
@@ -25,9 +27,12 @@ export class QuoSyntaxError extends Error {
         super(message);
 
         this.stack = `\
+${token.line === 1 ? "" : `${token.line - 1} | ${source.split("\n")[token.line - 1 - 1]}\n`}${token.line} | ${
+            source.split("\n")[token.line - 1]
+        }
+${" ".repeat(Math.log10(token.line) + 3 + token.col)}${token.lexeme.length === 1 ? "^" : "~".repeat(token.lexeme.length)}
 ${this.name}: ${this.message}
-${token.line} | ${source.split("\n")[token.line - 1]}
-${" ".repeat(Math.log10(token.line) + 3 + token.col - 1)}${token.lexeme.length === 1 ? "^" : "~".repeat(token.lexeme.length)}\
+    at line ${token.line}, column ${token.col}\
 `;
     }
 }

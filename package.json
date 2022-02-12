@@ -4,7 +4,7 @@
     "description": "An interpreted Lisp-like scripting language for data processing.",
     "main": "./dist/index.js",
     "bin": {
-        "quo": "./dist/bin.js"
+        "quo": "./dist/interaction/bin.js"
     },
     "scripts": {
         "watch": "tsc -w",

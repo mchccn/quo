@@ -12,10 +12,8 @@
  * - String utility
  *
  * UI/UX
- * - Better error handling and messages
  * - CLI for executing scripts
  * - Package manager
- * - Custom script debugger
  * - VSCode language support extension
  *
  * Namespaces
@@ -38,7 +36,6 @@
  * - Create native-like functions
  * - Special permissions to expression representation
  * - Direct bindings to evaluation and symbol names
- * - Change behaviour of actions
  *
  * Specifications
  *
@@ -67,9 +64,14 @@ execute(`\
 ;         (+ (fib (- n 1)) (fib (- n 2))))
 ; ))
 
-; (if (> 3 2)
-;     (print "true")
-;     (print "false"))
+(if (> 2 3)
+    (print "if")
+elif (> 2 3)
+    (print "elif1")
+elif (< 3 2)
+    (print "elif2")
+else
+    (print "else"))
 
 ;;;
 multi line comments
@@ -79,10 +81,10 @@ multi line comments
 ;     
 ; ))
 
-(def foo "bar")
-(print foo)
-(set foo "baz")
-(print foo)
-(drop foo)
-(print foo)
+; (def foo "bar")
+; (print foo)
+; (set foo "baz")
+; (print foo)
+; (drop foo)
+; (print foo)
 `);
