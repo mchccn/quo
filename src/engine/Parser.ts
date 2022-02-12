@@ -1,10 +1,11 @@
+import { QuoSyntaxError } from "../interaction/error";
 import { Expr, ListExpr, LiteralExpr, SymbolExpr } from "./Expr";
 import { Token, TokenType } from "./Token";
 
 export class Parser {
     private current = 0;
 
-    public constructor(public readonly tokens: Token[]) {}
+    public constructor(public readonly source: string, public readonly tokens: Token[]) {}
 
     public parseTokens() {
         this.validateParens();
@@ -15,30 +16,29 @@ export class Parser {
             list.push(this.expression());
         }
 
-        return new ListExpr(list);
+        return new ListExpr(new Token(TokenType.BeginList, "(", undefined, 0, 0), list);
     }
 
     private expression() {
-        this.consume(TokenType.BeginList, "Expected '(' to begin list.");
+        const begin = this.consume(TokenType.BeginList, "Expected '(' to begin list.");
 
         const list = [];
 
         while (!this.check(TokenType.EndList) && !this.isAtEnd()) {
-            ``;
             list.push(this.primary());
         }
 
         this.consume(TokenType.EndList, "Expected ')' after list contents.");
 
-        return new ListExpr(list);
+        return new ListExpr(begin, list);
     }
 
     private primary(): Expr {
-        if (this.match(TokenType.True)) return new LiteralExpr(true);
-        if (this.match(TokenType.False)) return new LiteralExpr(false);
-        if (this.match(TokenType.Nil)) return new LiteralExpr(null);
+        if (this.match(TokenType.True)) return new LiteralExpr(this.previous(), true);
+        if (this.match(TokenType.False)) return new LiteralExpr(this.previous(), false);
+        if (this.match(TokenType.Nil)) return new LiteralExpr(this.previous(), null);
 
-        if (this.match(TokenType.Number, TokenType.String)) return new LiteralExpr(this.previous().literal);
+        if (this.match(TokenType.Number, TokenType.String)) return new LiteralExpr(this.previous(), this.previous().literal);
 
         if (this.match(TokenType.Symbol)) return new SymbolExpr(this.previous());
 
@@ -50,7 +50,7 @@ export class Parser {
     private consume(type: TokenType, message: string) {
         if (this.check(type)) return this.advance();
 
-        throw new SyntaxError(message);
+        throw new QuoSyntaxError(this.source, this.peek(), message);
     }
 
     private match(...types: TokenType[]) {
@@ -58,9 +58,7 @@ export class Parser {
     }
 
     private check(type: TokenType) {
-        if (this.isAtEnd()) return false;
-
-        return this.peek().type === type;
+        return this.isAtEnd() ? false : this.peek().type === type;
     }
 
     private advance() {
@@ -88,14 +86,17 @@ export class Parser {
             if (t.type === TokenType.BeginList) {
                 stack.push(i);
             } else if (t.type === TokenType.EndList) {
-                if (!stack.length) throw new SyntaxError(`Unmatched right parentheses at line ${t.line}, column ${t.col}.`);
+                if (!stack.length)
+                    throw new QuoSyntaxError(this.source, t, `Unmatched right parentheses at line ${t.line}, column ${t.col}.`);
 
                 stack.pop();
             }
         });
 
         if (stack.length)
-            throw new SyntaxError(
+            throw new QuoSyntaxError(
+                this.source,
+                this.tokens[stack[0]],
                 `Unmatched left parentheses at line ${this.tokens[stack[0]].line}, column ${this.tokens[stack[0]].col}.`
             );
     }

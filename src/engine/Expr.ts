@@ -7,11 +7,13 @@ export interface ExprVisitor<R> {
 }
 
 export abstract class Expr {
+    abstract token: Token;
+
     abstract accept<R>(visitor: ExprVisitor<R>): R;
 }
 
 export class ListExpr extends Expr {
-    public constructor(public readonly list: Expr[]) {
+    public constructor(public readonly token: Token, public readonly list: Expr[]) {
         super();
     }
 
@@ -21,7 +23,7 @@ export class ListExpr extends Expr {
 }
 
 export class LiteralExpr extends Expr {
-    public constructor(public readonly literal: unknown) {
+    public constructor(public readonly token: Token, public readonly literal: unknown) {
         super();
     }
 
@@ -31,7 +33,7 @@ export class LiteralExpr extends Expr {
 }
 
 export class SymbolExpr extends Expr {
-    public constructor(public readonly symbol: Token) {
+    public constructor(public readonly token: Token) {
         super();
     }
 

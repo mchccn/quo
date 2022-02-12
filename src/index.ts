@@ -1,16 +1,15 @@
 /**
  * T O D O   L I S T
  *
+ * ! CHANGE ALL ERRORS TO CUSTOM QUO ERRORS, CHECK THAT CALLSTACK AND CUSTOM ERRORS WORK
+ *
  * Basic language features
- * - Fully-featured variables
  * - First-order functions, closures, and lambdas
  * - Control flow
- * - Arithmetic and basic operations
  *
  * Standard library
  * - Extended list operations
  * - String utility
- * - Boolean logic
  *
  * UI/UX
  * - Better error handling and messages
@@ -76,15 +75,14 @@ execute(`\
 multi line comments
 ;;;
 
-(for (def i 0) (i < 10) (set i (+ i 1)) (
-    
-))
+; (for (def i 0) (i < 10) (set i (+ i 1)) (
+;     
+; ))
 
-
-; (def foo "bar")
-; (print foo)
-; (set foo "baz")
-; (print foo)
-; (drop foo)
-; (print foo)
+(def foo "bar")
+(print foo)
+(set foo "baz")
+(print foo)
+(drop foo)
+(print foo)
 `);

@@ -1,8 +1,25 @@
+import { QuoAssertionError, QuoTypeError } from "../interaction/error";
 import { Environment } from "./Environment";
 import { Expr, ExprVisitor, ListExpr, LiteralExpr, SymbolExpr } from "./Expr";
+import { Token, TokenType } from "./Token";
+
+export class Trace {
+    public constructor(
+        public readonly file: string,
+        public readonly module: string,
+        public readonly token: Token,
+        public readonly target: Function
+    ) {}
+}
 
 export class Interpreter implements ExprVisitor<unknown> {
-    public environment = new Environment();
+    public callstack = [
+        new Trace("<anonymous>", "main", new Token(TokenType.Eof, "", undefined, 0, 0), function () {}),
+    ] as Trace[];
+
+    public environment = new Environment(this);
+
+    public constructor(public readonly source: string) {}
 
     public interpret(expr: Expr): unknown {
         const r = this.evaluate(expr);
@@ -17,7 +34,7 @@ export class Interpreter implements ExprVisitor<unknown> {
     }
 
     public visitSymbolExpr(expr: SymbolExpr) {
-        return this.environment.get(expr.symbol);
+        return this.environment.get(expr.token);
     }
 
     public visitListExpr(expr: ListExpr) {
@@ -26,18 +43,27 @@ export class Interpreter implements ExprVisitor<unknown> {
         const previous = this.environment;
 
         try {
-            this.environment = new Environment(this.environment);
+            this.environment = new Environment(this, this.environment);
 
             if (head instanceof SymbolExpr) {
-                if (this.environment.has(head.symbol) && typeof this.environment.get(head.symbol) === "function") {
-                    return (this.environment.get(head.symbol) as Function).apply(this, body);
+                if (this.environment.has(head.token) && typeof this.environment.get(head.token) === "function") {
+                    const fn = this.environment.get(head.token) as Function;
+
+                    // ! replace with actual file later
+                    this.callstack.unshift(new Trace("main", "main", head.token, fn));
+
+                    try {
+                        return fn.apply(this, body);
+                    } finally {
+                        this.callstack.shift();
+                    }
                 }
 
-                if (!this.environment.has(head.symbol))
-                    throw new TypeError(`Cannot call '${head.symbol.lexeme}' as it is not defined.`);
+                if (!this.environment.has(head.token))
+                    throw new QuoTypeError(this, head.token, `Cannot call '${head.token.lexeme}' as it is not defined.`);
 
-                if (typeof this.environment.get(head.symbol) !== "function")
-                    throw new TypeError(`Cannot call '${head.symbol.lexeme}' as it is not a function.`);
+                if (typeof this.environment.get(head.token) !== "function")
+                    throw new QuoTypeError(this, head.token, `Cannot call '${head.token.lexeme}' as it is not a function.`);
             } else {
                 return expr.list.map(this.evaluate.bind(this));
             }
@@ -59,7 +85,7 @@ export class Interpreter implements ExprVisitor<unknown> {
 
         if (v === null) return false;
 
-        throw new TypeError(`Attempted to coerce unhandled type of value.`);
+        throw new QuoAssertionError(`Attempted to coerce unhandled type of value.`);
     }
 
     public isfalsey(v: unknown): boolean {
@@ -79,7 +105,7 @@ export class Interpreter implements ExprVisitor<unknown> {
 
         if (v === null) return 0;
 
-        throw new TypeError(`Attempted to numberify unhandled type of value.`);
+        throw new QuoAssertionError(`Attempted to numberify unhandled type of value.`);
     }
 
     public stringify(v: unknown): string {
@@ -95,7 +121,7 @@ export class Interpreter implements ExprVisitor<unknown> {
 
         if (v === null) return "nil";
 
-        throw new TypeError(`Attempted to stringify unhandled type of value.`);
+        throw new QuoAssertionError(`Attempted to stringify unhandled type of value.`);
     }
 
     public deepclone(v: unknown): unknown {
@@ -111,7 +137,7 @@ export class Interpreter implements ExprVisitor<unknown> {
 
         if (v === null) return v;
 
-        throw new TypeError(`Attempted to deepclone unhandled type of value.`);
+        throw new QuoAssertionError(`Attempted to deepclone unhandled type of value.`);
     }
 
     public deepequals(a: unknown, b: unknown): boolean {

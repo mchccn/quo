@@ -1,16 +1,18 @@
+import { QuoReferenceError } from "../interaction/error";
+import type { Interpreter } from "./Interpreter";
 import type { Token } from "./Token";
 
 export class Environment {
     private map = new Map<string, unknown>();
 
-    public constructor(public readonly parent?: Environment) {}
+    public constructor(public readonly interpreter: Interpreter, public readonly parent?: Environment) {}
 
     public get(key: Token): unknown {
         return (
             this.map.get(key.lexeme) ??
             this.parent?.get(key) ??
             (() => {
-                throw new Error(`Undefined symbol '${key.lexeme}'.`);
+                throw new QuoReferenceError(this.interpreter, key, `Undefined symbol '${key.lexeme}'.`);
             })()
         );
     }
@@ -34,7 +36,7 @@ export class Environment {
             return value;
         }
 
-        throw new Error(`Undefined symbol '${key.lexeme}'.`);
+        throw new QuoReferenceError(this.interpreter, key, `Undefined symbol '${key.lexeme}'.`);
     }
 
     public has(key: Token): boolean {

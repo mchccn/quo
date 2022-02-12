@@ -1,5 +1,6 @@
 import type { defstdfn as _ } from "../../engine/stdlib";
 
+//TODO: ADD ELIF AND ELSE
 export const lib = (defstdfn: typeof _) =>
     defstdfn("if", function (...args) {
         const [condition, truthy, falsey, ...rest] = args;

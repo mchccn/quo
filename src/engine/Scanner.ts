@@ -1,3 +1,4 @@
+import { QuoSyntaxError } from "../interaction/error";
 import { Token, TokenType } from "./Token";
 
 export class Scanner {
@@ -60,7 +61,11 @@ export class Scanner {
                   } else if (this.isAlpha(c)) {
                       this.symbol();
                   } else {
-                      throw new SyntaxError(`Unexpected character '${c}' at line ${this.line}, column ${this.col}.`);
+                      throw new QuoSyntaxError(
+                          this.source,
+                          this.tokens[this.tokens.length - 1],
+                          `Unexpected character '${c}' at line ${this.line}, column ${this.col}.`
+                      );
                   }
               })();
     }
@@ -75,7 +80,8 @@ export class Scanner {
                 this.advance();
             }
 
-            if (this.isAtEnd()) throw new SyntaxError("Unterminated comment.");
+            if (this.isAtEnd())
+                throw new QuoSyntaxError(this.source, this.tokens[this.tokens.length - 1], "Unterminated comment.");
 
             this.advance();
 
@@ -90,7 +96,7 @@ export class Scanner {
             this.advance();
         }
 
-        if (this.isAtEnd()) throw new SyntaxError("Unterminated string.");
+        if (this.isAtEnd()) throw new QuoSyntaxError(this.source, this.tokens[this.tokens.length - 1], "Unterminated string.");
 
         this.advance();
 
