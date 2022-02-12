@@ -48,44 +48,43 @@
 
 import { execute } from "./interaction/execute";
 
-const code = '(print "hello")';
+execute(`\
+; Metaprogramming example
+;
+; (s hello world) ; => "hello world"
+;
+; (mdefn s args (
+;     (def mapped (std:list:map args (lambda (e) (
+;         (if (missymbol e)
+;            (msymbolname e)
+;            (meval e))
+;     ))))
+;     (std:list:join mapped " ")
+; ))
 
-const length = '(print "hello")'.length;
+; (defn fib (n) (
+;     (if (<= n 2)
+;         (1)
+;         (+ (fib (- n 1)) (fib (- n 2))))
+; ))
 
-const size = 217 * 1024;
+; (if (> 3 2)
+;     (print "true")
+;     (print "false"))
 
-const program = code.repeat(size / length);
+;;;
+multi line comments
+;;;
 
-execute(program);
+(for (def i 0) (i < 10) (set i (+ i 1)) (
+    
+))
 
-// execute(`\
-// ; Metaprogramming example
-// ;
-// ; (s hello world) ; => "hello world"
-// ;
-// ; (mdefn s args (
-// ;     (def mapped (std:list:map args (lambda (e) (
-// ;         (if (missymbol e)
-// ;            (msymbolname e)
-// ;            (meval e))
-// ;     ))))
-// ;     (std:list:join mapped " ")
-// ; ))
 
-// ; (defn fib (n) (
-// ;     (if (<= n 2)
-// ;         (1)
-// ;         (+ (fib (- n 1)) (fib (- n 2))))
-// ; ))
-
-// ; (if (= (+ 1 1) 2)
-// ;     (print "true")
-// ;     (print "false"))
-
-// ; (def foo "bar")
-// ; (print foo)
-// ; (set foo "baz")
-// ; (print foo)
-// ; (drop foo)
-// ; (print foo)
-// `);
+; (def foo "bar")
+; (print foo)
+; (set foo "baz")
+; (print foo)
+; (drop foo)
+; (print foo)
+`);

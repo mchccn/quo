@@ -54,14 +54,7 @@ export class Parser {
     }
 
     private match(...types: TokenType[]) {
-        for (const type of types) {
-            if (this.check(type)) {
-                this.advance();
-                return true;
-            }
-        }
-
-        return false;
+        return types.some((t) => this.check(t)) ? (this.advance(), true) : false;
     }
 
     private check(type: TokenType) {
@@ -95,8 +88,7 @@ export class Parser {
             if (t.type === TokenType.BeginList) {
                 stack.push(i);
             } else if (t.type === TokenType.EndList) {
-                if (!stack.length)
-                    throw new SyntaxError(`Unmatched right parentheses at line ${t.line}, column ${t.col}.`);
+                if (!stack.length) throw new SyntaxError(`Unmatched right parentheses at line ${t.line}, column ${t.col}.`);
 
                 stack.pop();
             }

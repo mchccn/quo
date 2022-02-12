@@ -46,6 +46,26 @@ export class Interpreter implements ExprVisitor<unknown> {
         }
     }
 
+    public istruthy(v: unknown): boolean {
+        if (typeof v === "function") return true;
+
+        if (typeof v === "string") return v.length > 0;
+
+        if (typeof v === "number") return v !== 0;
+
+        if (typeof v === "boolean") return v;
+
+        if (Array.isArray(v)) return v.length > 0;
+
+        if (v === null) return false;
+
+        throw new TypeError(`Attempted to coerce unhandled type of value.`);
+    }
+
+    public isfalsey(v: unknown): boolean {
+        return !this.istruthy(v);
+    }
+
     public numberify(v: unknown): number {
         if (typeof v === "function") return 0;
 
@@ -92,6 +112,22 @@ export class Interpreter implements ExprVisitor<unknown> {
         if (v === null) return v;
 
         throw new TypeError(`Attempted to deepclone unhandled type of value.`);
+    }
+
+    public deepequals(a: unknown, b: unknown): boolean {
+        if (typeof a === "function" || typeof b === "function") return false;
+
+        if (typeof a === "string" && typeof b === "string") return a === b;
+
+        if (typeof a === "number" && typeof b === "number") return a === b;
+
+        if (typeof a === "boolean" && typeof b === "boolean") return a === b;
+
+        if (Array.isArray(a) && Array.isArray(b)) return a.length === b.length && a.every((x, i) => this.deepequals(x, b[i]));
+
+        if (a === null && b === null) return true;
+
+        return false;
     }
 
     private static isnativefn(v: any): v is Function & { native: true } {

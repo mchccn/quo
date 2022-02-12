@@ -19,6 +19,7 @@ export class Scanner {
     public scanTokens() {
         while (!this.isAtEnd()) {
             this.start = this.current;
+
             this.scanToken();
         }
 
@@ -30,71 +31,61 @@ export class Scanner {
     private scanToken() {
         const c = this.advance();
 
-        switch (c) {
-            case "(":
-                this.addToken(TokenType.BeginList);
-                break;
-            case ")":
-                this.addToken(TokenType.EndList);
-                break;
-            case " ":
-            case "\r":
-            case "\t":
-                this.col++;
-                break;
-            case "\n":
-                this.line++;
-                this.col = 1;
-                break;
-            case ";":
-                while (this.peek() != "\n" && !this.isAtEnd()) this.advance();
-                break;
-            case '"':
-                this.string();
-                break;
-            case ">":
-                this.addToken((this.match("="), TokenType.Symbol), c);
-                break;
-            case "<":
-                this.addToken((this.match("="), TokenType.Symbol), c);
-                break;
-            case "=":
-                this.addToken((this.match("="), TokenType.Symbol), c);
-                break;
-            case "!":
-                this.addToken((this.match("="), TokenType.Symbol), c);
-                break;
-            case "+":
-                this.addToken(TokenType.Symbol, c);
-                break;
-            case "-":
-                if (this.isDigit(this.peek())) {
-                    this.number();
-                } else {
-                    this.addToken(TokenType.Symbol, c);
-                }
-                break;
-            case "*":
-                this.addToken(TokenType.Symbol, c);
-                break;
-            case "/":
-                this.addToken(TokenType.Symbol, c);
-                break;
-            default:
-                if (this.isDigit(c)) {
-                    this.number();
-                } else if (this.isAlpha(c)) {
-                    this.symbol();
-                } else {
-                    throw new SyntaxError(`Unexpected character '${c}' at line ${this.line}, column ${this.col}.`);
-                }
-                break;
-        }
+        const lexmap = new Map([
+            ["(", () => this.addToken(TokenType.BeginList)],
+            [")", () => this.addToken(TokenType.EndList)],
+            [" ", () => this.col++],
+            ["\r", () => this.col++],
+            ["\t", () => this.col++],
+            ["\v", () => this.col++],
+            ["\f", () => this.col++],
+            ["\n", () => (this.line++, (this.col = 1))],
+            [";", () => this.comments()],
+            ['"', () => this.string()],
+            [">", () => this.addToken((this.match("="), TokenType.Symbol), c)],
+            ["<", () => this.addToken((this.match("="), TokenType.Symbol), c)],
+            ["=", () => this.addToken((this.match("="), TokenType.Symbol), c)],
+            ["!", () => this.addToken((this.match("="), TokenType.Symbol), c)],
+            ["+", () => this.addToken((this.match("1"), TokenType.Symbol), c)],
+            ["-", () => (this.isDigit(this.peek()) ? this.number() : this.addToken((this.match("1"), TokenType.Symbol), c))],
+            ["*", () => this.addToken(TokenType.Symbol, c)],
+            ["/", () => this.addToken(TokenType.Symbol, c)],
+        ]);
+
+        (lexmap.has(c)
+            ? lexmap.get(c)!
+            : () => {
+                  if (this.isDigit(c)) {
+                      this.number();
+                  } else if (this.isAlpha(c)) {
+                      this.symbol();
+                  } else {
+                      throw new SyntaxError(`Unexpected character '${c}' at line ${this.line}, column ${this.col}.`);
+                  }
+              })();
+    }
+
+    private comments() {
+        if (this.peek() === ";" && this.peekNext() === ";") {
+            this.advance(), this.advance();
+
+            while (!(this.peek() === ";" && this.peekNext() === ";" && this.peekNextNext() === ";") && !this.isAtEnd()) {
+                if (this.peek() === "\n") this.line++;
+
+                this.advance();
+            }
+
+            if (this.isAtEnd()) throw new SyntaxError("Unterminated comment.");
+
+            this.advance();
+
+            if (!this.isAtEnd()) this.advance();
+        } else while (this.peek() !== "\n" && !this.isAtEnd()) this.advance();
     }
 
     private string() {
-        while (this.peek() != '"' && !this.isAtEnd()) {
-            if (this.peek() == "\n") this.line++;
+        while (this.peek() !== '"' && !this.isAtEnd()) {
+            if (this.peek() === "\n") this.line++;
 
             this.advance();
         }
@@ -103,9 +94,7 @@ export class Scanner {
 
         this.advance();
 
-        const value = this.source.substring(this.start + 1, this.current - 1);
-
-        this.addToken(TokenType.String, value);
+        this.addToken(TokenType.String, this.source.substring(this.start + 1, this.current - 1));
     }
 
     private number() {
@@ -131,21 +120,15 @@ export class Scanner {
     }
 
     private peek() {
-        if (this.isAtEnd()) return "\0";
-
-        return this.source[this.current];
+        return this.source[this.current] ?? "\0";
     }
 
     private peekNext() {
-        if (this.current + 1 >= this.source.length) return "\0";
-
-        return this.source[this.current + 1];
+        return this.source[this.current + 1] ?? "\0";
     }
 
     private peekNextNext() {
-        if (this.current + 2 >= this.source.length) return "\0";
-
-        return this.source[this.current + 1];
+        return this.source[this.current + 2] ?? "\0";
     }
 
     private advance() {
@@ -153,17 +136,15 @@ export class Scanner {
     }
 
     private match(expected: string) {
-        if (this.isAtEnd()) return false;
+        if (this.isAtEnd() || this.source[this.current] !== expected) return false;
 
-        if (this.source[this.current] !== expected) return false;
-
-        this.current++;
+        this.advance();
 
         return true;
     }
 
     private isDigit(c: string) {
-        return /^[0-9]$/.test(c);
+        return /^\d$/.test(c);
     }
 
     private isAlpha(c: string) {
@@ -171,7 +152,7 @@ export class Scanner {
     }
 
     private isAlphaNumeric(c: string) {
-        return this.isAlpha(c) || this.isDigit(c);
+        return /^\w$/.test(c);
     }
 
     private addToken(type: TokenType, literal?: unknown) {
