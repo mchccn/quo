@@ -17,7 +17,6 @@
  * - VSCode language support extension
  *
  * Namespaces
- * - Namespace delimiter
  * - Define namespaces
  * - Use namespaces
  * - Fully qualified name
@@ -64,22 +63,33 @@ execute(`\
 ;         (+ (fib (- n 1)) (fib (- n 2))))
 ; ))
 
-(if (> 2 3)
-    (print "if")
-elif (> 2 3)
-    (print "elif1")
-elif (< 3 2)
-    (print "elif2")
-else
-    (print "else"))
+; (if (> 2 3)
+;     (print "if")
+; elif (> 2 3)
+;     (print "elif1")
+; elif (< 3 2)
+;     (print "elif2")
+; else
+;     (print "else"))
 
 ;;;
 multi line comments
 ;;;
 
-; (for (def i 0) (i < 10) (set i (+ i 1)) (
-;     
+; (for (def i 0) (< i 10) (inc i) (
+;     (print i)
 ; ))
+
+; (for e of (1 2 3) (
+;     (print "e is:" e)
+; ))
+
+(def i 0)
+
+(do (
+    (print i)
+    (inc i)
+) while (< i 10))
 
 ; (def foo "bar")
 ; (print foo)

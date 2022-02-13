@@ -10,7 +10,9 @@
         <img src="https://forthebadge.com/images/badges/fixed-bugs.svg" />
 </div>
 
-> Modernized Lisp for automating tasks and data processing.
+---
+
+#### Challenging the status _quo_ since February 10, 2022
 
 ### About
 
