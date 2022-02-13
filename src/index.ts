@@ -1,6 +1,13 @@
 /**
  * T O D O   L I S T
  *
+ * ! FIX CLOSURES
+ * ! RENAME GET HEAD TO GET LAST
+ * ! WRITE TESTS FOR STDLIB
+ *
+ * ? Get a colored output lib
+ * ? Make CLI
+ *
  * Standard library
  * - Extended list operations
  * - String utility
@@ -88,6 +95,16 @@ execute(`\
 ;     (std:list:join mapped " ")
 ; ))
 
+; (defn closure (x) (
+;     (lambda () (print x))
+; ))
+; 
+; (def call (closure 1))
+; 
+; (print call)
+; 
+; (print (call))
+
 ; (print (lambda (x) (* x x)))
 ; 
 ; (def sq (lambda (x) (* x x)))
@@ -110,6 +127,7 @@ execute(`\
 ; 
 ; (for (def i 1) (<= i 10) (inc i) (
 ;     (print (fib i))
+
 ; ))
 
 ; (defn echo args (

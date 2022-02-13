@@ -1,0 +1,11 @@
+; Closures, closures, closures...
+
+(defn closure (x) (
+    (lambda () (print x))
+))
+
+(def call (closure 1))
+
+(print call)
+
+(print (call))

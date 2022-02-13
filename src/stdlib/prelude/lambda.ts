@@ -1,8 +1,9 @@
+import { Environment } from "../../engine/Environment";
 import { Expr, ListExpr, SymbolExpr } from "../../engine/Expr";
 import type { Interpreter } from "../../engine/Interpreter";
 import type { defstdfn as _ } from "../../engine/stdlib";
 import { QuoSyntaxError } from "../../interaction/error";
-import { gethead } from "../../interaction/executils";
+import { gethlast } from "../../interaction/executils";
 
 export const lib = (defstdfn: typeof _) =>
     defstdfn("lambda", function (...args) {
@@ -21,14 +22,24 @@ export const lib = (defstdfn: typeof _) =>
                     );
 
             try {
+                const closure = new Environment(this, this.environment);
+
                 return function lambda(this: Interpreter, ...args: Expr[]) {
                     const values = args.map(this.evaluate.bind(this));
 
                     params.list.forEach((param, index) => {
-                        this.environment.define(param.token.lexeme, values[index] ?? null);
+                        closure.define(param.token.lexeme, values[index] ?? null);
                     });
 
-                    return gethead(gethead(this.evaluate(body) as unknown[]));
+                    const previous = this.environment;
+
+                    this.environment = closure;
+
+                    try {
+                        return gethlast(gethlast(this.evaluate(body) as unknown[]));
+                    } finally {
+                        this.environment = previous;
+                    }
                 };
             } finally {
                 rest.map(this.evaluate.bind(this));
@@ -37,12 +48,22 @@ export const lib = (defstdfn: typeof _) =>
 
         if (params instanceof SymbolExpr) {
             try {
+                const closure = new Environment(this, this.environment);
+
                 return function lambda(this: Interpreter, ...args: Expr[]) {
                     const values = args.map(this.evaluate.bind(this));
 
-                    this.environment.define(params.token.lexeme, values);
+                    closure.define(params.token.lexeme, values);
 
-                    return gethead(gethead(this.evaluate(body) as unknown[]));
+                    const previous = this.environment;
+
+                    this.environment = closure;
+
+                    try {
+                        return gethlast(gethlast(this.evaluate(body) as unknown[]));
+                    } finally {
+                        this.environment = previous;
+                    }
                 };
             } finally {
                 rest.map(this.evaluate.bind(this));
