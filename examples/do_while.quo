@@ -1,0 +1,8 @@
+; While loops and do-while loops are supported in Quo!
+
+(def i 0)
+
+(do (
+    (print i)
+    (inc i)
+) while (< i 10))

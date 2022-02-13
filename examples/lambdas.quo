@@ -1,0 +1,10 @@
+; Lambda expressions are also included.
+; They come in handy a lot in list processing!
+
+(print (lambda (x) (* x x)))
+
+(def sq (lambda (x) (* x x)))
+
+(print sq)
+
+(print (sq 2))

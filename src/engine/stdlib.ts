@@ -22,7 +22,7 @@ export const defstdfn = (name: string, fn: (this: Interpreter, ...args: Expr[]) 
         enumerable: false,
     });
 
-    if (stdlib.has(name)) console.warn(`Overwrote stdlib entry ${name}.`);
+    if (stdlib.has(name)) console.warn(`Overwrote stdlib entry '${name}'.`);
 
     stdlib.set(name, fn);
 };

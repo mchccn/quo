@@ -1,1 +1,3 @@
-(print "hello world")
+; Our humble beginnings...
+
+(print "Hello, world!")

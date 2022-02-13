@@ -1,0 +1,30 @@
+; Loops and functions (recursion) :
+
+(defn fib (n) (
+    (if (<= n 2)
+        (1)
+        (+ (fib (- n 1)) (fib (- n 2))))
+))
+
+(defn factorial (n) (
+    (if (<= n 1)
+        (1)
+        (* n (factorial (- n 1))))
+))
+
+;;;
+C-style loop, but Quo's take on it
+
+You can also iterate over lists with:
+
+(for item of list (
+    (print item)
+))
+
+The keyword 'of' can be exchanged with 'in' freely, too.
+;;;
+
+(for (def i 1) (<= i 10) (inc i) (
+    (print "fib:" (fib i))
+    (print "factorial:" (factorial i))
+))

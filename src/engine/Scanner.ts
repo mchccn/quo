@@ -43,14 +43,14 @@ export class Scanner {
             ["\n", () => (this.line++, (this.col = 1))],
             [";", () => this.comments()],
             ['"', () => this.string()],
-            [">", () => this.addToken((this.match("="), TokenType.Symbol), c)],
-            ["<", () => this.addToken((this.match("="), TokenType.Symbol), c)],
-            ["=", () => this.addToken((this.match("="), TokenType.Symbol), c)],
-            ["!", () => this.addToken((this.match("="), TokenType.Symbol), c)],
-            ["+", () => this.addToken((this.match("1"), TokenType.Symbol), c)],
-            ["-", () => (this.isDigit(this.peek()) ? this.number() : this.addToken((this.match("1"), TokenType.Symbol), c))],
-            ["*", () => this.addToken(TokenType.Symbol, c)],
-            ["/", () => this.addToken(TokenType.Symbol, c)],
+            [">", () => this.addToken((this.match("="), TokenType.Symbol))],
+            ["<", () => this.addToken((this.match("="), TokenType.Symbol))],
+            ["=", () => this.addToken((this.match("="), TokenType.Symbol))],
+            ["!", () => this.addToken((this.match("="), TokenType.Symbol))],
+            ["+", () => this.addToken((this.match("1"), TokenType.Symbol))],
+            ["-", () => (this.isDigit(this.peek()) ? this.number() : this.addToken((this.match("1"), TokenType.Symbol)))],
+            ["*", () => this.addToken(TokenType.Symbol)],
+            ["/", () => this.addToken(TokenType.Symbol)],
         ]);
 
         (lexmap.has(c)

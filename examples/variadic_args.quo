@@ -1,0 +1,9 @@
+; Quo also has variadic args!
+
+(defn echo args (
+    (print args)
+))
+
+; Arguments are passed as a list directly to the function instead.
+
+(echo 1 2 3) ; => (1 2 3)

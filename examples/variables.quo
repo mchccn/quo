@@ -1,0 +1,13 @@
+; You can define, change, and even drop variables!
+
+(def foo "bar")
+
+(print foo)
+
+(set foo "baz")
+
+(print foo)
+
+(drop foo)
+
+(print foo)

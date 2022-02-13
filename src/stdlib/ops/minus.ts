@@ -9,6 +9,6 @@ export const lib = (defstdfn: typeof _) =>
         const [first, ...rest] = args.map(this.evaluate.bind(this));
 
         return rest.reduce((acc, val) => {
-            return this.numberify(acc) + this.numberify(val);
+            return this.numberify(acc) - this.numberify(val);
         }, first);
     });

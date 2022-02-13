@@ -12,12 +12,12 @@ export const lib = (defstdfn: typeof _) =>
             if (Array.isArray(acc))
                 return Array(this.numberify(val))
                     .fill(0)
-                    .map(() => this.deepclone(acc));
+                    .flatMap(() => this.deepclone(acc));
 
             if (Array.isArray(val))
                 return Array(this.numberify(acc))
                     .fill(0)
-                    .map(() => this.deepclone(val));
+                    .flatMap(() => this.deepclone(val));
 
             if (typeof acc === "number") return acc * this.numberify(val);
 

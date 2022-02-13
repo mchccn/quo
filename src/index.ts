@@ -1,12 +1,6 @@
 /**
  * T O D O   L I S T
  *
- * ! CHANGE ALL ERRORS TO CUSTOM QUO ERRORS, CHECK THAT CALLSTACK AND CUSTOM ERRORS WORK
- *
- * Basic language features
- * - First-order functions, closures, and lambdas
- * - Control flow
- *
  * Standard library
  * - Extended list operations
  * - String utility
@@ -43,6 +37,43 @@
 
 import { execute } from "./interaction/execute";
 
+// console.log(
+//     bindings(
+//         stdlib,
+//         defstdfn,
+//         nativebind(
+//             String,
+//             [
+//                 "charAt",
+//                 "charCodeAt",
+//                 "codePointAt",
+//                 "concat",
+//                 "endsWith",
+//                 "includes",
+//                 "indexOf",
+//                 "lastIndexOf",
+//                 "padEnd",
+//                 "padStart",
+//                 "slice",
+//                 "split",
+//                 "startsWith",
+//                 "substring",
+//                 "toLowerCase",
+//                 "toUpperCase",
+//                 "trim",
+//                 "trimEnd",
+//                 "trimLeft",
+//                 "trimRight",
+//                 "trimStart",
+//             ],
+//             function (target: unknown, expr: Expr) {
+//                 if (typeof target !== "string") throw new QuoTypeError(this, expr.token, `Target must be a string.`);
+//             }
+//         ),
+//         "str"
+//     )
+// );
+
 execute(`\
 ; Metaprogramming example
 ;
@@ -57,11 +88,35 @@ execute(`\
 ;     (std:list:join mapped " ")
 ; ))
 
+; (print (lambda (x) (* x x)))
+; 
+; (def sq (lambda (x) (* x x)))
+; 
+; (print sq)
+; 
+; (print (sq 2))
+
 ; (defn fib (n) (
 ;     (if (<= n 2)
 ;         (1)
 ;         (+ (fib (- n 1)) (fib (- n 2))))
 ; ))
+; 
+; (defn factorial (n) (
+;     (if (<= n 1)
+;         (1)
+;         (* n (factorial (- n 1))))
+; ))
+; 
+; (for (def i 1) (<= i 10) (inc i) (
+;     (print (fib i))
+; ))
+
+; (defn echo args (
+;     (print args)
+; ))
+; 
+; (echo 1 2 3)
 
 ; (if (> 2 3)
 ;     (print "if")
@@ -84,12 +139,11 @@ multi line comments
 ;     (print "e is:" e)
 ; ))
 
-(def i 0)
-
-(do (
-    (print i)
-    (inc i)
-) while (< i 10))
+; (def i 0)
+; (do (
+;     (print i)
+;     (inc i)
+; ) while (< i 10))
 
 ; (def foo "bar")
 ; (print foo)

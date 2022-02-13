@@ -76,3 +76,13 @@ export class QuoAssertionError extends Error {
         this.stack = "";
     }
 }
+
+export class QuoBindingError extends Error {
+    public name = "BindingError";
+
+    public constructor(message: string) {
+        super(message);
+
+        this.stack = "";
+    }
+}
