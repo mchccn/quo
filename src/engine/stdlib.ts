@@ -24,7 +24,7 @@ export const defstdfn = (name: string, fn: (this: Interpreter, ...args: Expr[]) 
 
     if (stdlib.has(name)) console.warn(`Overwrote stdlib entry '${name}'.`);
 
-    stdlib.set(name, fn);
+    return stdlib.set(name, fn);
 };
 
 // ! Will be changed to work with user-defined modules/packages and namespaces

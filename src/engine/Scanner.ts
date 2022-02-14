@@ -63,7 +63,7 @@ export class Scanner {
                   } else {
                       throw new QuoSyntaxError(
                           this.source,
-                          this.tokens[this.tokens.length - 1],
+                          new Token(TokenType.Eof, c, c, this.line, this.col),
                           `Unexpected character '${c}' at line ${this.line}, column ${this.col}.`
                       );
                   }
@@ -118,7 +118,7 @@ export class Scanner {
     }
 
     private symbol() {
-        while (this.isAlphaNumeric(this.peek())) this.advance();
+        while (this.isAlphaNumeric(this.peek()) || this.peek() === ":") this.advance();
 
         const text = this.source.substring(this.start, this.current);
 

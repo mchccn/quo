@@ -7,7 +7,7 @@ export const lib = (defstdfn: typeof _) =>
         const [name, value, ...rest] = args;
 
         if (name instanceof SymbolExpr) {
-            this.environment.ancestor(1).define(name.token.lexeme, this.evaluate(value));
+            this.environment.ancestor(1 + +this.nsactive).define(name.token.lexeme, this.evaluate(value));
 
             rest.map(this.evaluate.bind(this));
 

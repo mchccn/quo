@@ -13,6 +13,9 @@ export class Trace {
 }
 
 export class Interpreter implements ExprVisitor<unknown> {
+    public nsdepth = 0;
+    public nsactive = false;
+
     public callstack = [
         new Trace("<anonymous>", "main", new Token(TokenType.Eof, "", undefined, 0, 0), function () {}),
     ] as Trace[];

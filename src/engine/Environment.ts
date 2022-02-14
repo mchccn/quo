@@ -1,8 +1,12 @@
-import { QuoReferenceError } from "../interaction/error";
+import { QuoAssertionError, QuoReferenceError } from "../interaction/error";
 import type { Interpreter } from "./Interpreter";
 import type { Token } from "./Token";
 
+let envid = 0;
+
 export class Environment {
+    public id = `env-${envid++}`;
+
     private map = new Map<string, unknown>();
 
     public constructor(public readonly interpreter: Interpreter, public readonly parent?: Environment) {}
@@ -75,5 +79,17 @@ export class Environment {
         }
 
         return this;
+    }
+
+    public fillsafe(entries: [string, unknown][]) {
+        for (const [key, value] of entries) {
+            if (this.map.has(key)) throw new QuoAssertionError(`Symbol '${key}' already defined in this scope.`);
+
+            this.map.set(key, value);
+        }
+    }
+
+    public entries() {
+        return [...this.map.entries()];
     }
 }

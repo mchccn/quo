@@ -93,8 +93,17 @@ execute(`\
 ; ))
 
 (namespace myspace (
-    
+    (def i 0)
+
+    (namespace nested (
+        (def j 1)
+    ))
 ))
+
+(print myspace)
+(print myspace:i)
+(print myspace:nested)
+(print myspace:nested:j)
 
 ; (defn closure (x) (
 ;     (lambda () (print x))

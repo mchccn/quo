@@ -3,7 +3,7 @@ import type { Interpreter } from "../engine/Interpreter";
 import type * as std from "../engine/stdlib";
 import { QuoBindingError } from "./error";
 
-function error(message: string) {
+function error(message: string): never {
     throw new QuoBindingError(message);
 }
 
@@ -12,7 +12,7 @@ export function nativebind<P extends object>(
     lib: (keyof P)[],
     validate: (this: Interpreter, target: unknown, expr: Expr) => unknown
 ) {
-    return Object.fromEntries(
+    return new Map(
         Object.getOwnPropertyNames(prototype)
             .filter((k) => lib.includes(k as keyof P) && typeof prototype[k as keyof typeof prototype] === "function")
             .map((k) => [k.toLowerCase(), Reflect.get(prototype, k)] as [string, Function])
@@ -50,7 +50,17 @@ export function bindings(stdlib: typeof std.stdlib, defstdfn: typeof std.defstdf
     if (typeof lib === "string" || typeof lib === "number" || typeof lib === "boolean")
         return name ? stdlib.set(name, lib) : error("Missing name for value.");
 
-    if (typeof lib === "symbol" || typeof lib === "bigint") return;
+    if (typeof lib === "symbol" || typeof lib === "bigint") return stdlib;
+
+    if (lib instanceof Map) {
+        if (!name) return error("Missing name for bindings.");
+
+        stdlib.set(name, new Map());
+
+        for (const [key, value] of lib) bindings(stdlib, defstdfn, value, name ? `${name}:${key}` : key);
+
+        return stdlib;
+    }
 
     if (typeof lib === "object")
         for (const key of Object.getOwnPropertyNames(lib)) {
