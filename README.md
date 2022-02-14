@@ -30,7 +30,7 @@ Hopefully, Quo will provide _you_ some good times, with good old Lisp syntax.
 
 ### Usage
 
-Say you think Qip sounds pretty cool, but you don't know how to get started?
+Say you think Quo sounds pretty cool, but you don't know how to get started?
 Well my friend, it's the same as any other language: install, learn, use.
 
 **Installation**
