@@ -1,11 +1,8 @@
 /**
  * T O D O   L I S T
  *
- * ! FIX CLOSURES
- * ! RENAME GET HEAD TO GET LAST
  * ! WRITE TESTS FOR STDLIB
  *
- * ? Get a colored output lib
  * ? Make CLI
  *
  * Standard library
@@ -94,6 +91,10 @@ execute(`\
 ;     ))))
 ;     (std:list:join mapped " ")
 ; ))
+
+(namespace myspace (
+    
+))
 
 ; (defn closure (x) (
 ;     (lambda () (print x))

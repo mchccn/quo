@@ -85,6 +85,8 @@ export class Interpreter implements ExprVisitor<unknown> {
 
         if (Array.isArray(v)) return v.length > 0;
 
+        if (v instanceof Map) return v.size > 0;
+
         if (v === null) return false;
 
         throw new QuoAssertionError(`Attempted to coerce unhandled type of value.`);
@@ -105,6 +107,8 @@ export class Interpreter implements ExprVisitor<unknown> {
 
         if (Array.isArray(v)) return v.length;
 
+        if (v instanceof Map) return v.size;
+
         if (v === null) return 0;
 
         throw new QuoAssertionError(`Attempted to numberify unhandled type of value.`);
@@ -120,6 +124,8 @@ export class Interpreter implements ExprVisitor<unknown> {
         if (typeof v === "boolean") return v.toString();
 
         if (Array.isArray(v)) return `(${v.map(this.stringify.bind(this)).join(" ")})`;
+
+        if (v instanceof Map) return `[${Interpreter.isnativens(v) ? "native " : ""}namespace ${(v as any).name}]`;
 
         if (v === null) return "nil";
 
@@ -137,6 +143,8 @@ export class Interpreter implements ExprVisitor<unknown> {
 
         if (Array.isArray(v)) return v.map(this.deepclone.bind(this));
 
+        if (v instanceof Map) return new Map([...v.entries()].map(([k, v]) => [k, this.deepclone(v)]));
+
         if (v === null) return v;
 
         throw new QuoAssertionError(`Attempted to deepclone unhandled type of value.`);
@@ -153,6 +161,15 @@ export class Interpreter implements ExprVisitor<unknown> {
 
         if (Array.isArray(a) && Array.isArray(b)) return a.length === b.length && a.every((x, i) => this.deepequals(x, b[i]));
 
+        if (a instanceof Map && b instanceof Map)
+            return (
+                a.size === b.size &&
+                this.deepequals(
+                    Object.fromEntries([...(this.deepclone(a) as Map<any, any>).entries()]),
+                    Object.fromEntries([...(this.deepclone(b) as Map<any, any>).entries()])
+                )
+            );
+
         if (a === null && b === null) return true;
 
         return false;
@@ -160,6 +177,10 @@ export class Interpreter implements ExprVisitor<unknown> {
 
     private static isnativefn(v: any): v is Function & { native: true } {
         return v?.native === true && typeof v === "function";
+    }
+
+    private static isnativens(v: any): v is Map<any, any> & { native: true } {
+        return v?.native === true && v instanceof Map;
     }
 
     public evaluate(expr: Expr): unknown {
