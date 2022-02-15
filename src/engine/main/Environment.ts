@@ -1,4 +1,4 @@
-import { QuoAssertionError, QuoReferenceError } from "../interaction/error";
+import { QuoAssertionError, QuoReferenceError } from "../../interaction/error";
 import type { Interpreter } from "./Interpreter";
 import type { Token } from "./Token";
 

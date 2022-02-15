@@ -1,4 +1,4 @@
-import { QuoAssertionError, QuoRuntimeError, QuoTypeError } from "../interaction/error";
+import { QuoAssertionError, QuoRuntimeError, QuoTypeError } from "../../interaction/error";
 import { Environment } from "./Environment";
 import { Expr, ExprVisitor, ListExpr, LiteralExpr, SymbolExpr } from "./Expr";
 import { Token, TokenType } from "./Token";
@@ -52,7 +52,7 @@ export class Interpreter implements ExprVisitor<unknown> {
                 if (this.environment.has(head.token) && typeof this.environment.get(head.token) === "function") {
                     const fn = this.environment.get(head.token) as Function;
 
-                    // ! replace with actual file later
+                    // ! Replace with actual file later
                     this.callstack.unshift(new Trace("main", "main", head.token, fn));
 
                     if (this.callstack.length > 1337) throw new QuoRuntimeError(this, head.token, `Callstack limit exceeded.`);

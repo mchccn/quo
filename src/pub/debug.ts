@@ -1,5 +1,5 @@
-import type { Environment } from "../engine/Environment";
-import type { Interpreter } from "../engine/Interpreter";
+import type { Environment } from "../engine/main/Environment";
+import type { Interpreter } from "../engine/main/Interpreter";
 
 export function logenv(this: Interpreter, env: Environment): string {
     return `${env.id}: {

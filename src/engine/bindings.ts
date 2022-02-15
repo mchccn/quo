@@ -1,7 +1,8 @@
-import type { Expr } from "../engine/Expr";
-import type { Interpreter } from "../engine/Interpreter";
-import type * as std from "../engine/stdlib";
-import { QuoBindingError } from "./error";
+import type { Expr } from "./main/Expr";
+import type { Interpreter } from "./main/Interpreter";
+import type * as std from "./stdlib";
+import { defstdfn, defstdns } from "./stdlib";
+import { QuoBindingError } from "../interaction/error";
 
 function error(message: string): never {
     throw new QuoBindingError(message);
@@ -40,7 +41,7 @@ export function nativebind<P extends object>(
     );
 }
 
-export function bindings(stdlib: typeof std.stdlib, defstdfn: typeof std.defstdfn, lib: unknown, name = "") {
+export function bindings(stdlib: typeof std.stdlib, lib: unknown, name = "") {
     if (lib === null || typeof lib === "undefined")
         return name ? stdlib.set(name, null) : error("Cannot convert nullish value to bindings.");
 
@@ -55,16 +56,12 @@ export function bindings(stdlib: typeof std.stdlib, defstdfn: typeof std.defstdf
     if (lib instanceof Map) {
         if (!name) return error("Missing name for bindings.");
 
-        stdlib.set(name, new Map());
-
-        for (const [key, value] of lib) bindings(stdlib, defstdfn, value, name ? `${name}:${key}` : key);
-
-        return stdlib;
+        return (lib as any).name || name ? defstdns((lib as any).name || name, lib) : error("Library namespace has no name.");
     }
 
     if (typeof lib === "object")
         for (const key of Object.getOwnPropertyNames(lib)) {
-            bindings(stdlib, defstdfn, lib![key as keyof typeof lib], name ? `${name}:${key}` : key);
+            bindings(stdlib, lib![key as keyof typeof lib], name ? `${name}:${key}` : key);
         }
 
     return stdlib;

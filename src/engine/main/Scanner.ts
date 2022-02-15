@@ -1,4 +1,4 @@
-import { QuoSyntaxError } from "../interaction/error";
+import { QuoSyntaxError } from "../../interaction/error";
 import { Token, TokenType } from "./Token";
 
 export class Scanner {

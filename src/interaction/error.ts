@@ -1,5 +1,5 @@
-import type { Interpreter } from "../engine/Interpreter";
-import type { Token } from "../engine/Token";
+import type { Interpreter } from "../engine/main/Interpreter";
+import type { Token } from "../engine/main/Token";
 
 function formatstack(this: Error, interpreter: Interpreter, token: Token) {
     const { source, callstack } = interpreter;

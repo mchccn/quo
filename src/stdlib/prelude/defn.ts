@@ -1,9 +1,9 @@
-import { Environment } from "../../engine/Environment";
-import { Expr, ListExpr, SymbolExpr } from "../../engine/Expr";
-import type { Interpreter } from "../../engine/Interpreter";
+import { Environment } from "../../engine/main/Environment";
+import { Expr, ListExpr, SymbolExpr } from "../../engine/main/Expr";
+import type { Interpreter } from "../../engine/main/Interpreter";
 import type { defstdfn as _ } from "../../engine/stdlib";
 import { QuoSyntaxError } from "../../interaction/error";
-import { gethlast } from "../../interaction/executils";
+import { getlast } from "../../engine/executils";
 
 export const lib = (defstdfn: typeof _) =>
     defstdfn("defn", function (...args) {
@@ -38,7 +38,7 @@ export const lib = (defstdfn: typeof _) =>
                     this.environment = closure;
 
                     try {
-                        return gethlast(gethlast(this.evaluate(body) as unknown[]));
+                        return getlast(getlast(this.evaluate(body) as unknown[]));
                     } finally {
                         this.environment = previous;
                     }
@@ -73,7 +73,7 @@ export const lib = (defstdfn: typeof _) =>
                     this.environment = closure;
 
                     try {
-                        return gethlast(gethlast(this.evaluate(body) as unknown[]));
+                        return getlast(getlast(this.evaluate(body) as unknown[]));
                     } finally {
                         this.environment = previous;
                     }

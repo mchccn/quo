@@ -1,4 +1,4 @@
-import { QuoSyntaxError } from "../interaction/error";
+import { QuoSyntaxError } from "../../interaction/error";
 import { Expr, ListExpr, LiteralExpr, SymbolExpr } from "./Expr";
 import { Token, TokenType } from "./Token";
 

@@ -1,4 +1,4 @@
-import { ListExpr, SymbolExpr } from "../../engine/Expr";
+import { ListExpr, SymbolExpr } from "../../engine/main/Expr";
 import type { defstdfn as _ } from "../../engine/stdlib";
 import { QuoSyntaxError } from "../../interaction/error";
 
