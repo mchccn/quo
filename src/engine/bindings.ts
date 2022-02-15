@@ -2,7 +2,7 @@ import type { Expr } from "./main/Expr";
 import type { Interpreter } from "./main/Interpreter";
 import type * as std from "./stdlib";
 import { defstdfn, defstdns } from "./stdlib";
-import { QuoBindingError } from "../interaction/error";
+import { QuoBindingError } from "../priv/error";
 
 function error(message: string): never {
     throw new QuoBindingError(message);

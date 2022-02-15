@@ -2,4 +2,4 @@
 
 process.env.QUO_EXEC_CLI = "true";
 
-import "./cli";
+import "../priv/cli";

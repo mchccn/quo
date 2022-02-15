@@ -2,7 +2,7 @@ import { Environment } from "../../engine/main/Environment";
 import { Expr, ListExpr, SymbolExpr } from "../../engine/main/Expr";
 import type { Interpreter } from "../../engine/main/Interpreter";
 import type { defstdfn as _ } from "../../engine/stdlib";
-import { QuoSyntaxError } from "../../interaction/error";
+import { QuoSyntaxError } from "../../priv/error";
 import { getlast } from "../../engine/executils";
 
 export const lib = (defstdfn: typeof _) =>

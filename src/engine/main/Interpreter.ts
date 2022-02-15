@@ -1,4 +1,4 @@
-import { QuoAssertionError, QuoRuntimeError, QuoTypeError } from "../../interaction/error";
+import { QuoAssertionError, QuoRuntimeError, QuoTypeError } from "../../priv/error";
 import { Environment } from "./Environment";
 import { Expr, ExprVisitor, ListExpr, LiteralExpr, SymbolExpr } from "./Expr";
 import { Token, TokenType } from "./Token";

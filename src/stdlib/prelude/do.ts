@@ -1,6 +1,6 @@
 import { SymbolExpr } from "../../engine/main/Expr";
 import type { defstdfn as _ } from "../../engine/stdlib";
-import { QuoSyntaxError } from "../../interaction/error";
+import { QuoSyntaxError } from "../../priv/error";
 
 export const lib = (defstdfn: typeof _) =>
     defstdfn("do", function (...args) {

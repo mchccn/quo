@@ -1,6 +1,6 @@
 import type { Expr } from "../../engine/main/Expr";
 import { nativebind } from "../../engine/bindings";
-import { QuoTypeError } from "../../interaction/error";
+import { QuoTypeError } from "../../priv/error";
 
 export const lib = Object.assign(
     new Map([
