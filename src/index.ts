@@ -14,11 +14,6 @@
  * - Package manager
  * - VSCode language support extension
  *
- * Namespaces
- * - Define namespaces
- * - Use namespaces
- * - Fully qualified name
- *
  * Modules
  * - Import modules as whole or a few symbols
  * - Export symbols
@@ -92,18 +87,28 @@ execute(`\
 ;     (std:list:join mapped " ")
 ; ))
 
-(namespace myspace (
-    (def i 0)
-
-    (namespace nested (
-        (def j 1)
-    ))
-))
-
-(print myspace)
-(print myspace:i)
-(print myspace:nested)
-(print myspace:nested:j)
+; (namespace myspace (
+;     (def i 0)
+; 
+;     (namespace nested (
+;         (def j 1)
+;     ))
+; ))
+; 
+; (print myspace)
+; (print myspace:i)
+; (print myspace:nested)
+; (print myspace:nested:j)
+; 
+; (use myspace)
+; 
+; (print i)
+; (print nested)
+; (print nested:j)
+; 
+; (use nested)
+; 
+; (print j)
 
 ; (defn closure (x) (
 ;     (lambda () (print x))

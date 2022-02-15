@@ -12,13 +12,11 @@ export class Environment {
     public constructor(public readonly interpreter: Interpreter, public readonly parent?: Environment) {}
 
     public get(key: Token): unknown {
-        return (
-            this.map.get(key.lexeme) ??
-            this.parent?.get(key) ??
-            (() => {
-                throw new QuoReferenceError(this.interpreter, key, `Undefined symbol '${key.lexeme}'.`);
-            })()
-        );
+        if (this.map.has(key.lexeme)) return this.map.get(key.lexeme);
+
+        if (this.parent?.has(key)) return this.parent.get(key);
+
+        throw new QuoReferenceError(this.interpreter, key, `Undefined symbol '${key.lexeme}'.`);
     }
 
     public define(key: string, value: unknown): unknown {
