@@ -40,6 +40,6 @@ export const lib = (defstdfn: typeof _) =>
 
             this.nsdepth--;
 
-            this.nsactive = true;
+            if (!this.nsdepth) this.nsactive = false;
         }
     });
