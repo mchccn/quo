@@ -7,6 +7,7 @@ Usage
 
 Commands
     run [script]              Runs a Quo script
+    repl                      Starts a Quo REPL
     help [command]            In-depth help messages
     tutor                     Short tutorial on Quo
     docs [query]              Bring up stdlib reference
@@ -22,3 +23,18 @@ More
 
     Use Quox for a fast Quo compiler in Rust
 `;
+
+export const helpmap = new Map([
+    ["run", ""],
+    ["repl", ""],
+    ["help", ""],
+    ["tutor", ""],
+    ["docs", ""],
+    ["spec", ""],
+    ["add", ""],
+    ["remove", ""],
+    ["publish", ""],
+    ["patch", ""],
+    ["list", ""],
+    ["version", ""],
+]);
