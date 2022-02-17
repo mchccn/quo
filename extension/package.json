@@ -1,0 +1,25 @@
+{
+    "name": "quo",
+    "displayName": "Quo Language Support",
+    "description": "Adds language support for Quo in VSCode.",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.64.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "quo",
+            "aliases": ["Quo", "quo"],
+            "extensions": [".quo"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "quo",
+            "scopeName": "source.quo",
+            "path": "./syntaxes/quo.tmLanguage.json"
+        }]
+    }
+}

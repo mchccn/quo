@@ -7,7 +7,6 @@
  *
  * Standard library
  * - Extended list operations
- * - String utility
  *
  * UI/UX
  * - CLI for executing scripts
@@ -22,7 +21,6 @@
  * - File system
  * - Operating system
  * - Networking
- * - JavaScript libraries
  *
  * Metaprogramming
  * - Create native-like functions
