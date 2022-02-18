@@ -17,12 +17,13 @@ export class Interpreter implements ExprVisitor<unknown> {
     public nsactive = false;
 
     public callstack = [
-        new Trace("<anonymous>", "main", new Token(TokenType.Eof, "", undefined, 0, 0), function () {}),
+        // ! Replace with actual module name later
+        new Trace(this.filename, this.filename, new Token(TokenType.Eof, "", undefined, 0, 0), function () {}),
     ] as Trace[];
 
     public environment = new Environment(this);
 
-    public constructor(public readonly source: string) {}
+    public constructor(public readonly filename: string, public readonly source: string) {}
 
     public interpret(expr: Expr): unknown {
         const r = this.evaluate(expr);
@@ -52,8 +53,8 @@ export class Interpreter implements ExprVisitor<unknown> {
                 if (this.environment.has(head.token) && typeof this.environment.get(head.token) === "function") {
                     const fn = this.environment.get(head.token) as Function;
 
-                    // ! Replace with actual file later
-                    this.callstack.unshift(new Trace("main", "main", head.token, fn));
+                    // ! Replace with actual module name later
+                    this.callstack.unshift(new Trace(this.filename, this.filename, head.token, fn));
 
                     if (this.callstack.length > 1337) throw new QuoRuntimeError(this, head.token, `Callstack limit exceeded.`);
 

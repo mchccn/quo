@@ -3,7 +3,7 @@ import { Parser } from "../engine/main/Parser";
 import { Scanner } from "../engine/main/Scanner";
 import { loadlibs } from "../engine/stdlib";
 
-export function execute(source: string) {
+export function execute(filename: string, source: string) {
     const tokens = new Scanner(source).scanTokens();
 
     const expr = new Parser(source, tokens).parseTokens();
@@ -15,5 +15,5 @@ export function execute(source: string) {
     // load deps
 
     // ! '*' used in development only
-    return loadlibs(new Interpreter(source), "*").interpret(expr);
+    return loadlibs(new Interpreter(filename, source), "*").interpret(expr);
 }

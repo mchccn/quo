@@ -34,7 +34,9 @@
 
 import { execute } from "./pub/execute";
 
-execute(`\
+execute(
+    "main",
+    `\
 ; Metaprogramming example
 ;
 ; (s hello world) ; => "hello world"
@@ -58,4 +60,5 @@ execute(`\
 (def toupcase touppercase)
 
 (print (toupcase "hello"))
-`);
+`
+);
