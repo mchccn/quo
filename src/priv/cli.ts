@@ -3,6 +3,7 @@ import { join } from "path";
 import { execute } from "../pub/execute";
 import { repl } from "../pub/repl";
 import { helpmap, helpmsg } from "./help";
+import { pkg } from "./package";
 
 if (process.env.QUO_EXEC_CLI !== "true") throw new Error(`Attempted to use CLI module programatically.`);
 
@@ -51,6 +52,12 @@ if (process.env.QUO_EXEC_CLI !== "true") throw new Error(`Attempted to use CLI m
         }
 
         console.log(msg);
+
+        process.exit(0);
+    }
+
+    if (command === "version") {
+        console.log(`Quo v${pkg.version}`);
 
         process.exit(0);
     }
