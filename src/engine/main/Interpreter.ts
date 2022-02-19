@@ -23,7 +23,7 @@ export class Interpreter implements ExprVisitor<unknown> {
 
     public environment = new Environment(this);
 
-    public constructor(public readonly filename: string, public readonly source: string) {}
+    public constructor(public readonly filepath: string, public readonly filename: string, public readonly source: string) {}
 
     public interpret(expr: Expr): unknown {
         const r = this.evaluate(expr);

@@ -28,7 +28,7 @@ if (process.env.QUO_EXEC_CLI !== "true") throw new Error(`Attempted to use CLI m
 
         // ! Does not include imports/third-party packages
 
-        execute(filename.split(".").slice(0, -1).join("."), contents);
+        execute(filename, contents);
 
         process.exit(0);
     }

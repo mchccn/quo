@@ -10,16 +10,32 @@
         "Programming Languages"
     ],
     "contributes": {
-        "languages": [{
-            "id": "quo",
-            "aliases": ["Quo", "quo"],
-            "extensions": [".quo"],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "quo",
-            "scopeName": "source.quo",
-            "path": "./syntaxes/quo.tmLanguage.json"
-        }]
+        "languages": [
+            {
+                "id": "quo",
+                "aliases": [
+                    "Quo",
+                    "quo"
+                ],
+                "extensions": [
+                    ".quo"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "quo",
+                "scopeName": "source.quo",
+                "path": "./syntaxes/quo.tmLanguage.json"
+            }
+        ],
+        "iconThemes": [
+            {
+                "id": "quofile",
+                "label": "Quo file icons",
+                "path": "./icons/quo-icon-theme.json"
+            }
+        ]
     }
 }

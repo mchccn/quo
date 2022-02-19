@@ -16,7 +16,7 @@ Welcome to Quo v${pkg.version}.`);
 
     const input = [];
 
-    const interpreter = loadlibs(new Interpreter("repl", ""), "*");
+    const interpreter = loadlibs(new Interpreter("repl", "repl", ""), "*");
 
     repl: while (true) {
         prompt: do {

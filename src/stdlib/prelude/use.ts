@@ -13,7 +13,7 @@ export const lib = (defstdfn: typeof _) =>
             if (value instanceof Map) {
                 this.environment.ancestor(1).fillsafe([...value.entries()]);
             } else {
-                this.environment.ancestor(1).define(a.token.lexeme.split(":").reverse()[0], value);
+                this.environment.ancestor(1).define(a.token.lexeme.split(":").at(-1)!, value);
             }
         }
 

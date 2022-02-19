@@ -1,0 +1,14 @@
+{
+    "file": "file",
+    "fileExtensions": {
+        "quo": "quo"
+    },
+    "languageIds": {
+        "quo": "quo"
+    },
+    "iconDefinitions": {
+        "file-quo": {
+            "iconPath": "icons/quofile.svg"
+        }
+    }
+}

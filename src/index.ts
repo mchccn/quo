@@ -19,17 +19,12 @@
  *
  * Bindings
  * - File system
- * - Operating system
  * - Networking
  *
  * Metaprogramming
  * - Create native-like functions
  * - Special permissions to expression representation
  * - Direct bindings to evaluation and symbol names
- *
- * Specifications
- *
- * Tutorial
  */
 
 import { execute } from "./pub/execute";

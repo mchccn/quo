@@ -3,17 +3,13 @@ import { Parser } from "../engine/main/Parser";
 import { Scanner } from "../engine/main/Scanner";
 import { loadlibs } from "../engine/stdlib";
 
-export function execute(filename: string, source: string) {
+export function execute(path: string, source: string) {
     const tokens = new Scanner(source).scanTokens();
 
     const expr = new Parser(source, tokens).parseTokens();
 
-    // ! Dependency resolution step
-
-    // const deps = new Resolver(expr).resolve();
-
-    // load deps
-
     // ! '*' used in development only
-    return loadlibs(new Interpreter(filename, source), "*").interpret(expr);
+    return loadlibs(new Interpreter(path, path.split("/").at(-1)!.split(".").slice(0, -1).join("."), source), "*").interpret(
+        expr
+    );
 }

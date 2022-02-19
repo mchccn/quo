@@ -1,32 +1,57 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "Quo",
-	"patterns": [
-		{
-			"include": "#keywords"
-		},
-		{
-			"include": "#strings"
-		}
-	],
-	"repository": {
-		"keywords": {
-			"patterns": [{
-				"name": "keyword.control.quo",
-				"match": "\\b(if|while|for|return)\\b"
-			}]
-		},
-		"strings": {
-			"name": "string.quoted.double.quo",
-			"begin": "\"",
-			"end": "\"",
-			"patterns": [
-				{
-					"name": "constant.character.escape.quo",
-					"match": "\\\\."
-				}
-			]
-		}
-	},
-	"scopeName": "source.quo"
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Quo",
+    "patterns": [
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#strings"
+        },
+        {
+            "include": "#numbers"
+        },
+        {
+            "include": "#comments"
+        }
+    ],
+    "repository": {
+        "comments": {
+            "patterns": [
+                {
+                    "name": "comment.multi-line.quo",
+                    "begin": ";;;",
+                    "end": ";;;"
+                },
+                {
+                    "name": "comment.single-line.quo",
+                    "begin": ";",
+                    "end": "\n"
+                }
+            ]
+        },
+        "keywords": {
+            "patterns": [
+                {
+                    "name": "keyword.control.quo",
+                    "match": "\\b(def|defn|do|drop|for|of|in|if|elif|else|lambda|list|namespace|print|set|use|do|while)\\b"
+                }
+            ]
+        },
+        "strings": {
+            "name": "string.quoted.double.quo",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": []
+        },
+        "numbers": {
+            "patterns": [
+                {
+                    "name": "constant.numeric.decimal.quo",
+                    "match": "\\b\\d+\\.\\d*\\b"
+                }
+            ]
+        }
+    },
+    "scopeName": "source.quo"
 }
