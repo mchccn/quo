@@ -235,6 +235,8 @@ export class Interpreter implements ExprVisitor<unknown> {
     }
 
     public evaluate(expr: Expr): unknown {
+        if (!(expr instanceof Expr)) return expr;
+
         if (!expr) return null;
 
         return expr.accept(this);

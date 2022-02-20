@@ -1,5 +1,5 @@
-import type { Expr } from "../../engine/main/Expr";
 import { nativebind } from "../../engine/bindings";
+import type { Expr } from "../../engine/main/Expr";
 import { QuoTypeError } from "../../priv/error";
 
 export const lib = Object.assign(
@@ -34,7 +34,7 @@ export const lib = Object.assign(
             function (target: unknown, expr: Expr) {
                 if (typeof target !== "string") throw new QuoTypeError(this, expr.token, `Target must be a string.`);
             }
-        ).entries(),
+        ),
     ]),
     { name: "str" }
 );
