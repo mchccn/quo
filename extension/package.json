@@ -20,7 +20,11 @@
                 "extensions": [
                     ".quo"
                 ],
-                "configuration": "./language-configuration.json"
+                "configuration": "./language-configuration.json",
+                "icon": {
+                    "dark": "./icons/quo.png",
+                    "light": "./icons/quo.png"
+                }
             }
         ],
         "grammars": [
@@ -28,13 +32,6 @@
                 "language": "quo",
                 "scopeName": "source.quo",
                 "path": "./syntaxes/quo.tmLanguage.json"
-            }
-        ],
-        "iconThemes": [
-            {
-                "id": "quofile",
-                "label": "Quo file icons",
-                "path": "./icons/quo-icon-theme.json"
             }
         ]
     }

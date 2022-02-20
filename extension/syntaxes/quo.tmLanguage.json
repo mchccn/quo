@@ -9,7 +9,7 @@
             "include": "#strings"
         },
         {
-            "include": "#numbers"
+            "include": "#constants"
         },
         {
             "include": "#comments"
@@ -34,7 +34,7 @@
             "patterns": [
                 {
                     "name": "keyword.control.quo",
-                    "match": "\\b(def|defn|do|drop|for|of|in|if|elif|else|lambda|list|namespace|print|set|use|do|while)\\b"
+                    "match": "\\b(def|defn|do|drop|for|of|in|if|elif|else|lambda|list|namespace|print|set|use|do|while|inc|dec|\\+1|\\-1)\\b"
                 }
             ]
         },
@@ -44,11 +44,15 @@
             "end": "\"",
             "patterns": []
         },
-        "numbers": {
+        "constants": {
             "patterns": [
                 {
                     "name": "constant.numeric.decimal.quo",
-                    "match": "\\b\\d+\\.\\d*\\b"
+                    "match": "\\d+(\\.\\d*)?"
+                },
+                {
+                    "name": "constant.language.quo",
+                    "match": "\\b(true|false)\\b"
                 }
             ]
         }
