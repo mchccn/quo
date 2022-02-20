@@ -70,6 +70,8 @@ export const loadlibs = (interpreter: Interpreter, modules: string[] | "*") => {
 
                 const { lib } = require(join(__dirname, "..", path, entry.name));
 
+                if (lib === false) continue;
+
                 if (typeof lib === "function") {
                     lib.call(undefined, defstdfn);
                 } else if (lib instanceof Map) {

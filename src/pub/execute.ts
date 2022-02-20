@@ -9,7 +9,8 @@ export function execute(path: string, source: string) {
     const expr = new Parser(source, tokens).parseTokens();
 
     // ! '*' used in development only
-    return loadlibs(new Interpreter(path, path.split("/").at(-1)!.split(".").slice(0, -1).join("."), source), "*").interpret(
-        expr
-    );
+    return loadlibs(
+        new Interpreter(path, path.split("/").at(-1)!.split(".").slice(0, -1).join("."), source),
+        "*"
+    ).interpret(expr);
 }

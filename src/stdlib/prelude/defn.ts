@@ -12,7 +12,11 @@ export const lib = (defstdfn: typeof _) =>
         if (!(name instanceof SymbolExpr)) throw new QuoSyntaxError(this.source, name.token, `Expected function name.`);
 
         if (!(body instanceof ListExpr))
-            throw new QuoSyntaxError(this.source, body.token, `Expected function body, instead got '${body.token.lexeme}'.`);
+            throw new QuoSyntaxError(
+                this.source,
+                body.token,
+                `Expected function body, instead got '${body.token.lexeme}'.`
+            );
 
         if (params instanceof ListExpr) {
             for (const param of params.list)

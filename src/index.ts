@@ -9,13 +9,11 @@
  * - Extended list operations
  *
  * UI/UX
- * - CLI for executing scripts
  * - Package manager
  * - VSCode language support extension
  *
  * Modules
  * - Import modules as whole or a few symbols
- * - Export symbols
  *
  * Bindings
  * - File system

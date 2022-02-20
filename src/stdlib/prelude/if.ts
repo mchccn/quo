@@ -26,7 +26,8 @@ export const lib = (defstdfn: typeof _) =>
                         break;
                     }
 
-                    if (!condition) throw new QuoSyntaxError(this.source, elif.token, `Expected condition after 'elif'.`);
+                    if (!condition)
+                        throw new QuoSyntaxError(this.source, elif.token, `Expected condition after 'elif'.`);
 
                     if (!value) throw new QuoSyntaxError(this.source, elif.token, `Expected value after 'elif'.`);
 

@@ -28,7 +28,11 @@ export class Interpreter implements ExprVisitor<unknown> {
         return new Map(this.environment.root().getexports());
     }
 
-    public constructor(public readonly filepath: string, public readonly filename: string, public readonly source: string) {}
+    public constructor(
+        public readonly filepath: string,
+        public readonly filename: string,
+        public readonly source: string
+    ) {}
 
     public interpret(expr: Expr): unknown {
         const r = this.evaluate(expr);
@@ -88,7 +92,8 @@ export class Interpreter implements ExprVisitor<unknown> {
                     // ! Replace with actual module name later
                     this.callstack.unshift(new Trace(this.filename, this.filename, head.token, fn));
 
-                    if (this.callstack.length > 1337) throw new QuoRuntimeError(this, head.token, `Callstack limit exceeded.`);
+                    if (this.callstack.length > 1337)
+                        throw new QuoRuntimeError(this, head.token, `Callstack limit exceeded.`);
 
                     try {
                         return fn.apply(this, body);
@@ -98,10 +103,18 @@ export class Interpreter implements ExprVisitor<unknown> {
                 }
 
                 if (!this.environment.has(head.token))
-                    throw new QuoTypeError(this, head.token, `Cannot call '${head.token.lexeme}' as it is not defined.`);
+                    throw new QuoTypeError(
+                        this,
+                        head.token,
+                        `Cannot call '${head.token.lexeme}' as it is not defined.`
+                    );
 
                 if (typeof this.environment.get(head.token) !== "function")
-                    throw new QuoTypeError(this, head.token, `Cannot call '${head.token.lexeme}' as it is not a function.`);
+                    throw new QuoTypeError(
+                        this,
+                        head.token,
+                        `Cannot call '${head.token.lexeme}' as it is not a function.`
+                    );
             } else {
                 return expr.list.map(this.evaluate.bind(this));
             }
@@ -151,7 +164,8 @@ export class Interpreter implements ExprVisitor<unknown> {
     }
 
     public stringify(v: unknown): string {
-        if (typeof v === "function") return `<${Interpreter.isnativefn(v) ? "native " : ""}fn ${v.name || "(anonymous)"}>`;
+        if (typeof v === "function")
+            return `<${Interpreter.isnativefn(v) ? "native " : ""}fn ${v.name || "(anonymous)"}>`;
 
         if (typeof v === "string") return v.toString();
 
@@ -195,7 +209,8 @@ export class Interpreter implements ExprVisitor<unknown> {
 
         if (typeof a === "boolean" && typeof b === "boolean") return a === b;
 
-        if (Array.isArray(a) && Array.isArray(b)) return a.length === b.length && a.every((x, i) => this.deepequals(x, b[i]));
+        if (Array.isArray(a) && Array.isArray(b))
+            return a.length === b.length && a.every((x, i) => this.deepequals(x, b[i]));
 
         if (a instanceof Map && b instanceof Map)
             return (

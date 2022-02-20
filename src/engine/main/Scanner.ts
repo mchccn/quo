@@ -48,7 +48,10 @@ export class Scanner {
             ["=", () => this.addToken((this.match("="), TokenType.Symbol))],
             ["!", () => this.addToken((this.match("="), TokenType.Symbol))],
             ["+", () => this.addToken((this.match("1"), TokenType.Symbol))],
-            ["-", () => (this.isDigit(this.peek()) ? this.number() : this.addToken((this.match("1"), TokenType.Symbol)))],
+            [
+                "-",
+                () => (this.isDigit(this.peek()) ? this.number() : this.addToken((this.match("1"), TokenType.Symbol))),
+            ],
             ["*", () => this.addToken(TokenType.Symbol)],
             ["/", () => this.addToken(TokenType.Symbol)],
         ]);
@@ -76,7 +79,10 @@ export class Scanner {
 
             this.advance(), this.advance();
 
-            while (!(this.peek() === ";" && this.peekNext() === ";" && this.peekNextNext() === ";") && !this.isAtEnd()) {
+            while (
+                !(this.peek() === ";" && this.peekNext() === ";" && this.peekNextNext() === ";") &&
+                !this.isAtEnd()
+            ) {
                 if (this.peek() === "\n") {
                     this.line++;
                     this.col = 1;
@@ -98,7 +104,8 @@ export class Scanner {
 
         while (this.peek() !== '"' && !this.isAtEnd() && this.peek() !== "\n") this.advance();
 
-        if (this.isAtEnd() || this.peek() === "\n") throw new QuoSyntaxError(this.source, start, "Unterminated string.");
+        if (this.isAtEnd() || this.peek() === "\n")
+            throw new QuoSyntaxError(this.source, start, "Unterminated string.");
 
         this.advance();
 

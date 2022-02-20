@@ -10,7 +10,11 @@ export const lib = (defstdfn: typeof _) =>
         const [params, body, ...rest] = args;
 
         if (!(body instanceof ListExpr))
-            throw new QuoSyntaxError(this.source, body.token, `Expected lambda body, instead got '${body.token.lexeme}'.`);
+            throw new QuoSyntaxError(
+                this.source,
+                body.token,
+                `Expected lambda body, instead got '${body.token.lexeme}'.`
+            );
 
         if (params instanceof ListExpr) {
             for (const param of params.list)

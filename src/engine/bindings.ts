@@ -56,7 +56,9 @@ export function bindings(stdlib: typeof std.stdlib, lib: unknown, name = "") {
     if (lib instanceof Map) {
         if (!name) return error("Missing name for bindings.");
 
-        return (lib as any).name || name ? defstdns((lib as any).name || name, lib) : error("Library namespace has no name.");
+        return (lib as any).name || name
+            ? defstdns((lib as any).name || name, lib)
+            : error("Library namespace has no name.");
     }
 
     if (typeof lib === "object")

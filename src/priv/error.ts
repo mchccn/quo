@@ -8,7 +8,9 @@ function formatstack(this: Error, interpreter: Interpreter, token: Token) {
 ${token.line === 1 ? "" : `${token.line - 1} | ${source.split("\n")[token.line - 1 - 1]}\n`}${token.line} | ${
         source.split("\n")[token.line - 1]
     }
-${" ".repeat(Math.log10(token.line) + 3 + token.col)}${token.lexeme.length === 1 ? "^" : "~".repeat(token.lexeme.length)}
+${" ".repeat(Math.log10(token.line) + 3 + token.col)}${
+        token.lexeme.length === 1 ? "^" : "~".repeat(token.lexeme.length)
+    }
 ${this.name}: ${this.message}
 ${callstack
     .slice(-10)
@@ -30,7 +32,9 @@ export class QuoSyntaxError extends Error {
 ${token.line === 1 ? "" : `${token.line - 1} | ${source.split("\n")[token.line - 1 - 1]}\n`}${token.line} | ${
             source.split("\n")[token.line - 1]
         }
-${" ".repeat(Math.log10(token.line) + 3 + token.col)}${token.lexeme.length === 1 ? "^" : "~".repeat(token.lexeme.length)}
+${" ".repeat(Math.log10(token.line) + 3 + token.col)}${
+            token.lexeme.length === 1 ? "^" : "~".repeat(token.lexeme.length)
+        }
 ${this.name}: ${this.message}
     at line ${token.line}, column ${token.col}\
 `;

@@ -7,7 +7,8 @@ export const lib = (defstdfn: typeof _) =>
     defstdfn("namespace", function (...args) {
         const [name, body, ...rest] = args;
 
-        if (!(name instanceof SymbolExpr)) throw new QuoSyntaxError(this.source, name.token, `Expected namespace name.`);
+        if (!(name instanceof SymbolExpr))
+            throw new QuoSyntaxError(this.source, name.token, `Expected namespace name.`);
 
         if (!(body instanceof ListExpr)) throw new QuoSyntaxError(this.source, name.token, `Expected namespace body.`);
 
@@ -26,7 +27,10 @@ export const lib = (defstdfn: typeof _) =>
         } finally {
             this.environment
                 .ancestor(1 + this.nsdepth)
-                .define(name.token.lexeme, Object.assign(new Map(this.environment.getexports()), { name: name.token.lexeme }));
+                .define(
+                    name.token.lexeme,
+                    Object.assign(new Map(this.environment.getexports()), { name: name.token.lexeme })
+                );
 
             this.environment = previous;
 

@@ -11,7 +11,11 @@ export const lib = (defstdfn: typeof _) =>
             const value = this.environment.get(a.token);
 
             if (value === undefined)
-                throw new QuoReferenceError(this, a.token, `Cannot reference '${a.token.lexeme}' as it is not defined.`);
+                throw new QuoReferenceError(
+                    this,
+                    a.token,
+                    `Cannot reference '${a.token.lexeme}' as it is not defined.`
+                );
 
             if (value instanceof Map) {
                 this.environment.ancestor(1).fillsafe([...value.entries()]);

@@ -9,10 +9,18 @@ export const lib = (defstdfn: typeof _) =>
         if (def instanceof SymbolExpr) {
             if (!condition) throw new QuoSyntaxError(this.source, def.token, `Expected 'of' or 'in'.`);
 
-            if (!(condition instanceof SymbolExpr) || (condition.token.lexeme !== "of" && condition.token.lexeme !== "in"))
-                throw new QuoSyntaxError(this.source, condition.token, `Expected 'of' or 'in', instead got '${condition.token.lexeme}'.`);
+            if (
+                !(condition instanceof SymbolExpr) ||
+                (condition.token.lexeme !== "of" && condition.token.lexeme !== "in")
+            )
+                throw new QuoSyntaxError(
+                    this.source,
+                    condition.token,
+                    `Expected 'of' or 'in', instead got '${condition.token.lexeme}'.`
+                );
 
-            if (!post) throw new QuoSyntaxError(this.source, condition.token, `Expected an iterable after 'for' or 'in'.`);
+            if (!post)
+                throw new QuoSyntaxError(this.source, condition.token, `Expected an iterable after 'for' or 'in'.`);
 
             const list = this.deepclone(this.evaluate(post));
 

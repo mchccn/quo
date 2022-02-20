@@ -38,7 +38,8 @@ export class Parser {
         if (this.match(TokenType.False)) return new LiteralExpr(this.previous(), false);
         if (this.match(TokenType.Nil)) return new LiteralExpr(this.previous(), null);
 
-        if (this.match(TokenType.Number, TokenType.String)) return new LiteralExpr(this.previous(), this.previous().literal);
+        if (this.match(TokenType.Number, TokenType.String))
+            return new LiteralExpr(this.previous(), this.previous().literal);
 
         if (this.match(TokenType.Symbol)) return new SymbolExpr(this.previous());
 
@@ -87,7 +88,11 @@ export class Parser {
                 stack.push(i);
             } else if (t.type === TokenType.EndList) {
                 if (!stack.length)
-                    throw new QuoSyntaxError(this.source, t, `Unmatched right parentheses at line ${t.line}, column ${t.col}.`);
+                    throw new QuoSyntaxError(
+                        this.source,
+                        t,
+                        `Unmatched right parentheses at line ${t.line}, column ${t.col}.`
+                    );
 
                 stack.pop();
             }
