@@ -1,4 +1,4 @@
-import { QuoAssertionError, QuoReferenceError } from "../../priv/error";
+import { QuoAssertionError, QuoReferenceError, QuoRuntimeError } from "../../priv/error";
 import type { Interpreter } from "./Interpreter";
 import type { Token } from "./Token";
 
@@ -8,6 +8,8 @@ export class Environment {
     public id = `env-${envid++}`;
 
     private map = new Map<string, unknown>();
+
+    private exports = new Map<string, unknown>();
 
     public constructor(public readonly interpreter: Interpreter, public readonly parent?: Environment) {}
 
@@ -89,5 +91,26 @@ export class Environment {
 
     public entries() {
         return [...this.map.entries()];
+    }
+
+    public export(key: Token, value: unknown) {
+        if (this.exports.has(key.lexeme))
+            throw new QuoRuntimeError(this.interpreter, key, `Symbol '${key.lexeme}' already exported.`);
+
+        this.exports.set(key.lexeme, value);
+    }
+
+    public getexports() {
+        return [...this.exports.entries()];
+    }
+
+    public root() {
+        let environment = this as Environment;
+
+        while (environment.parent) {
+            environment = environment.parent;
+        }
+
+        return environment;
     }
 }

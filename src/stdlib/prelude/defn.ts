@@ -1,9 +1,9 @@
+import { getlast } from "../../engine/executils";
 import { Environment } from "../../engine/main/Environment";
 import { Expr, ListExpr, SymbolExpr } from "../../engine/main/Expr";
 import type { Interpreter } from "../../engine/main/Interpreter";
 import type { defstdfn as _ } from "../../engine/stdlib";
 import { QuoSyntaxError } from "../../priv/error";
-import { getlast } from "../../engine/executils";
 
 export const lib = (defstdfn: typeof _) =>
     defstdfn("defn", function (...args) {
@@ -53,7 +53,7 @@ export const lib = (defstdfn: typeof _) =>
                     enumerable: false,
                 });
 
-                return this.environment.ancestor(1).define(name.token.lexeme, fn);
+                return this.environment.ancestor(1 + +this.nsactive).define(name.token.lexeme, fn);
             } finally {
                 rest.map(this.evaluate.bind(this));
             }
@@ -88,7 +88,7 @@ export const lib = (defstdfn: typeof _) =>
                     enumerable: false,
                 });
 
-                return this.environment.ancestor(1).define(name.token.lexeme, fn);
+                return this.environment.ancestor(1 + +this.nsactive).define(name.token.lexeme, fn);
             } finally {
                 rest.map(this.evaluate.bind(this));
             }

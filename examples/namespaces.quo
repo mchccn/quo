@@ -5,7 +5,11 @@
 
     (namespace nested (
         (def j 1)
+
+        (export j)
     ))
+
+    (export i nested)
 ))
 
 (print myspace)

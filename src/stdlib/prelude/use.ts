@@ -1,6 +1,6 @@
 import { SymbolExpr } from "../../engine/main/Expr";
 import type { defstdfn as _ } from "../../engine/stdlib";
-import { QuoTypeError } from "../../priv/error";
+import { QuoReferenceError, QuoTypeError } from "../../priv/error";
 
 export const lib = (defstdfn: typeof _) =>
     defstdfn("use", function (...args) {
@@ -9,6 +9,9 @@ export const lib = (defstdfn: typeof _) =>
                 throw new QuoTypeError(this, a.token, `Expected symbol to use, instead got '${a.token.lexeme}'.`);
 
             const value = this.environment.get(a.token);
+
+            if (value === undefined)
+                throw new QuoReferenceError(this, a.token, `Cannot reference '${a.token.lexeme}' as it is not defined.`);
 
             if (value instanceof Map) {
                 this.environment.ancestor(1).fillsafe([...value.entries()]);

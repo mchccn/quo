@@ -568,6 +568,8 @@ Define one using the `namespace` function, like so:
 ```
 (namespace myspace (
 	(def i 0)
+
+	(export i)
 ))
 ```
 
@@ -576,6 +578,8 @@ And now find that you can retrieve the member `i` with `myspace:i` outside the n
 ```
 (print myspace:i)
 ```
+
+Symbols that are defined in the namespace and aren't exported are private.
 
 Namespaces can also be nested:
 
@@ -586,6 +590,8 @@ Namespaces can also be nested:
 	(namespace nested (
 		(def j 0)
 	))
+
+	(export i nested)
 ))
 ```
 

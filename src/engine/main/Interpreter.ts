@@ -1,4 +1,5 @@
-import { QuoAssertionError, QuoRuntimeError, QuoTypeError } from "../../priv/error";
+import { QuoAssertionError, QuoReferenceError, QuoRuntimeError, QuoTypeError } from "../../priv/error";
+import { wraplexeme } from "../executils";
 import { Environment } from "./Environment";
 import { Expr, ExprVisitor, ListExpr, LiteralExpr, SymbolExpr } from "./Expr";
 import { Token, TokenType } from "./Token";
@@ -23,6 +24,10 @@ export class Interpreter implements ExprVisitor<unknown> {
 
     public environment = new Environment(this);
 
+    public get exports() {
+        return new Map(this.environment.root().getexports());
+    }
+
     public constructor(public readonly filepath: string, public readonly filename: string, public readonly source: string) {}
 
     public interpret(expr: Expr): unknown {
@@ -38,7 +43,34 @@ export class Interpreter implements ExprVisitor<unknown> {
     }
 
     public visitSymbolExpr(expr: SymbolExpr) {
-        return this.environment.get(expr.token);
+        const path = expr.token.lexeme.split(":");
+
+        if (path.length === 1) return this.environment.get(expr.token);
+
+        const previous = this.environment;
+
+        this.environment = this.environment.ancestor(1);
+
+        let value: unknown = this.environment.get(wraplexeme(path.shift()!));
+
+        if (typeof value === "undefined")
+            throw new QuoReferenceError(this, expr.token, `Cannot reference '${path[0]}' as it is not defined.`);
+
+        while (path.length) {
+            if (value instanceof Map) {
+                if (!value.has(path[0]))
+                    throw new QuoReferenceError(this, expr.token, `No member named '${path[0]}' in namespace.`);
+
+                value = value.get(path.shift()!)!;
+            }
+
+            if (path.length > 1)
+                throw new QuoTypeError(this, expr.token, `Cannot reference '${path[0]}' as it is not a namespace.`);
+        }
+
+        this.environment = previous;
+
+        return value;
     }
 
     public visitListExpr(expr: ListExpr) {

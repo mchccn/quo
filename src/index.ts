@@ -44,16 +44,5 @@ execute(
 ;     ))))
 ;     (std:list:join mapped " ")
 ; ))
-
-(print (str:touppercase "hello"))
-(print (num:tofixed 10.23124 "2"))
-
-(use str)
-
-(print (touppercase "hello"))
-
-(def toupcase touppercase)
-
-(print (toupcase "hello"))
 `
 );

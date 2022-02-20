@@ -19,22 +19,16 @@ export const lib = (defstdfn: typeof _) =>
 
         this.environment = new Environment(this, this.environment);
 
-        const captured = [] as [string, unknown][];
-
         try {
             this.evaluate(body);
 
-            const entries = this.environment.entries();
-
-            for (const [entry, value] of entries) captured.push([`${name.token.lexeme}:${entry}`, value]);
-
-            captured.push([name.token.lexeme, Object.assign(new Map(entries), { name: name.token.lexeme })]);
-
             return null;
         } finally {
-            this.environment = previous;
+            this.environment
+                .ancestor(1 + this.nsdepth)
+                .define(name.token.lexeme, Object.assign(new Map(this.environment.getexports()), { name: name.token.lexeme }));
 
-            this.environment.ancestor(1 + this.nsdepth - 1).fillsafe(captured);
+            this.environment = previous;
 
             rest.map(this.evaluate.bind(this));
 
