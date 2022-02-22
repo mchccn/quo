@@ -16,7 +16,7 @@ export class Parser {
             list.push(this.expression());
         }
 
-        return new ListExpr(new Token(TokenType.BeginList, "(", undefined, 0, 0), list);
+        return new ListExpr(new Token(TokenType.BeginList, "(", undefined, 0, 0), list) as Expr;
     }
 
     private expression() {

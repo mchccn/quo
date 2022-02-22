@@ -27,8 +27,6 @@ if (process.env.QUO_EXEC_CLI !== "true") throw new Error(`Attempted to use CLI m
 
         const contents = readFileSync(join(process.cwd(), filename), "utf8");
 
-        // ! Does not include imports/third-party packages
-
         execute(filename, contents);
 
         process.exit(0);
