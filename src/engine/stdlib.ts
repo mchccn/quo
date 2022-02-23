@@ -22,8 +22,6 @@ export const defstdfn = (name: string, fn: (this: Interpreter, ...args: Expr[]) 
         enumerable: false,
     });
 
-    if (stdlib.has(name)) console.warn(`Overwrote stdlib entry '${name}'.`);
-
     return stdlib.set(name, fn);
 };
 
@@ -42,21 +40,8 @@ export const defstdns = (name: string, ns: Map<string, unknown>) => {
         enumerable: false,
     });
 
-    if (stdlib.has(name)) console.warn(`Overwrote stdlib entry '${name}'.`);
-
-    [...ns.entries()].forEach(([entry, value]) => {
-        if (typeof value === "function") return defstdfn(`${name}:${entry}`, value as any);
-
-        if (value instanceof Map) return defstdns(`${name}:${entry}`, value);
-
-        return stdlib.set(`${name}:${entry}`, value);
-    });
-
     return stdlib.set(name, ns);
 };
-
-// ! Will be changed to work with user-defined modules/packages and namespaces
-// ! Add module caching
 
 export const loadlibs = (interpreter: Interpreter, modules: string[] | "*") => {
     (function traverse(path: string) {
@@ -66,7 +51,7 @@ export const loadlibs = (interpreter: Interpreter, modules: string[] | "*") => {
             if (entry.isDirectory()) {
                 if (modules === "*" || modules.includes(entry.name)) traverse(join(path, entry.name));
             } else {
-                if (entry.name.endsWith(".d.ts")) continue;
+                if (!entry.name.endsWith(".js")) continue;
 
                 const { lib } = require(join(__dirname, "..", path, entry.name));
 

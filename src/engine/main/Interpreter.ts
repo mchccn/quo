@@ -5,27 +5,23 @@ import { Expr, ExprVisitor, ListExpr, LiteralExpr, SymbolExpr } from "./Expr";
 import { Token, TokenType } from "./Token";
 
 export class Trace {
-    public constructor(
-        public readonly file: string,
-        public readonly module: string,
-        public readonly token: Token,
-        public readonly target: Function
-    ) {}
+    public constructor(public readonly file: string, public readonly token: Token, public readonly target: Function) {}
 }
 
 export class Interpreter implements ExprVisitor<unknown> {
     public nsdepth = 0;
     public nsactive = false;
 
+    public modname = this.filename;
+
     public callstack = [
-        // ! Replace with actual module name later
-        new Trace(this.filename, this.filename, new Token(TokenType.Eof, "", undefined, 0, 0), function () {}),
+        new Trace(this.filename, new Token(TokenType.Eof, "", undefined, 0, 0), function () {}),
     ] as Trace[];
 
     public environment = new Environment(this);
 
     public get exports() {
-        return new Map(this.environment.root().getexports());
+        return Object.assign(new Map(this.environment.root().getexports()), { name: this.filename });
     }
 
     public constructor(
@@ -47,34 +43,7 @@ export class Interpreter implements ExprVisitor<unknown> {
     }
 
     public visitSymbolExpr(expr: SymbolExpr) {
-        const path = expr.token.lexeme.split(":");
-
-        if (path.length === 1) return this.environment.get(expr.token);
-
-        const previous = this.environment;
-
-        this.environment = this.environment.ancestor(1);
-
-        let value: unknown = this.environment.get(wraplexeme(path.shift()!));
-
-        if (typeof value === "undefined")
-            throw new QuoReferenceError(this, expr.token, `Cannot reference '${path[0]}' as it is not defined.`);
-
-        while (path.length) {
-            if (value instanceof Map) {
-                if (!value.has(path[0]))
-                    throw new QuoReferenceError(this, expr.token, `No member named '${path[0]}' in namespace.`);
-
-                value = value.get(path.shift()!)!;
-            }
-
-            if (path.length > 1)
-                throw new QuoTypeError(this, expr.token, `Cannot reference '${path[0]}' as it is not a namespace.`);
-        }
-
-        this.environment = previous;
-
-        return value;
+        return this.retrieve(expr);
     }
 
     public visitListExpr(expr: ListExpr) {
@@ -86,11 +55,10 @@ export class Interpreter implements ExprVisitor<unknown> {
             this.environment = new Environment(this, this.environment);
 
             if (head instanceof SymbolExpr) {
-                if (this.environment.has(head.token) && typeof this.environment.get(head.token) === "function") {
-                    const fn = this.environment.get(head.token) as Function;
+                const fn = this.retrieve(head);
 
-                    // ! Replace with actual module name later
-                    this.callstack.unshift(new Trace(this.filename, this.filename, head.token, fn));
+                if (typeof fn === "function") {
+                    this.callstack.unshift(new Trace(this.filename, head.token, fn));
 
                     if (this.callstack.length > 1337)
                         throw new QuoRuntimeError(this, head.token, `Callstack limit exceeded.`);
@@ -102,14 +70,7 @@ export class Interpreter implements ExprVisitor<unknown> {
                     }
                 }
 
-                if (!this.environment.has(head.token))
-                    throw new QuoTypeError(
-                        this,
-                        head.token,
-                        `Cannot call '${head.token.lexeme}' as it is not defined.`
-                    );
-
-                if (typeof this.environment.get(head.token) !== "function")
+                if (typeof fn !== "function")
                     throw new QuoTypeError(
                         this,
                         head.token,
@@ -224,6 +185,37 @@ export class Interpreter implements ExprVisitor<unknown> {
         if (a === null && b === null) return true;
 
         return false;
+    }
+
+    private retrieve(expr: Expr) {
+        const path = expr.token.lexeme.split(":");
+
+        if (path.length === 1) return this.environment.get(expr.token);
+
+        const previous = this.environment;
+
+        this.environment = this.environment.ancestor(1);
+
+        let value: unknown = this.environment.get(wraplexeme(path.shift()!));
+
+        if (typeof value === "undefined")
+            throw new QuoReferenceError(this, expr.token, `Cannot reference '${path[0]}' as it is not defined.`);
+
+        while (path.length) {
+            if (value instanceof Map) {
+                if (!value.has(path[0]))
+                    throw new QuoReferenceError(this, expr.token, `No member named '${path[0]}' in namespace.`);
+
+                value = value.get(path.shift()!)!;
+            }
+
+            if (path.length > 1)
+                throw new QuoTypeError(this, expr.token, `Cannot reference '${path[0]}' as it is not a namespace.`);
+        }
+
+        this.environment = previous;
+
+        return value;
     }
 
     private static isnativefn(v: any): v is Function & { native: true } {

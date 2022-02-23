@@ -15,8 +15,8 @@ ${this.name}: ${this.message}
 ${callstack
     .slice(-10)
     .map(
-        ({ file, module, token, target }) =>
-            `    at ${module}:${target.name || "anonymous"} (${file} ${token.line}:${token.col})`
+        ({ file, token, target }) =>
+            `    at ${interpreter.modname}:${target.name || "anonymous"} (${file} ${token.line}:${token.col})`
     )
     .join("\n")}\
 `;

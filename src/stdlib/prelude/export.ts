@@ -8,7 +8,11 @@ export const lib = (defstdfn: typeof _) =>
             if (!(arg instanceof SymbolExpr))
                 throw new QuoSyntaxError(this.source, arg.token, "Must export only symbols.");
 
-            this.environment.ancestor(1 + +this.nsactive).export(arg.token, this.evaluate(arg));
+            if (this.nsdepth) {
+                this.environment.ancestor(1 + Math.max(this.nsdepth, 1)).export(arg.token, this.evaluate(arg));
+            } else {
+                this.environment.root().export(arg.token, this.evaluate(arg));
+            }
         }
 
         return null;
