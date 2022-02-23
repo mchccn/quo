@@ -55,19 +55,18 @@ Quo comes with a CLI, but you can of course also use it programmatically.
 CLI documentation is available [here](https://cursorsdottsx.github.io/quo/cli), or you can run this to figure it out for yourself.
 
 ```
-$ quo -h
+$ quo help
 ```
 
 The programmatic way is to import the library like so:
 
 ```ts
-import Quo from "@cursorsdottsx/quo";
+import { execute } from "@cursorsdottsx/quo";
 
-const interpreter = new Quo.Interpreter();
-
-interpreter.interpret(`
+execute("main", `
     (print "hello world")
-`);
+`
+);
 ```
 
 For the full public API, please see [this](https://cursorsdottsx.github.io/quo/api) page.

@@ -5,7 +5,6 @@ import { Scanner } from "../engine/main/Scanner";
 import { loadlibs } from "../engine/stdlib";
 
 export function initinterpreter(path: string, source: string) {
-    // ! '*' used in development only
     return loadlibs(new Interpreter(path, path.split(sep).at(-1)!.split(".").slice(0, -1).join("."), source), "*");
 }
 
