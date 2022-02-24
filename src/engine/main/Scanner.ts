@@ -113,12 +113,38 @@ export class Scanner {
     }
 
     private number() {
-        while (this.isDigit(this.peek())) this.advance();
+        const map = new Map([
+            ["x", this.isHexDigit],
+            ["o", this.isOctalDigit],
+            ["b", this.isBinaryDigit],
+        ]);
 
-        if (this.peek() === "." && this.isDigit(this.peekNext())) {
-            this.advance();
+        if (map.has(this.peek().toLowerCase()) && map.get(this.peek().toLowerCase())!(this.peekNext())) {
+            const is = map.get(this.peek().toLowerCase())!;
 
+            this.advance(), this.advance();
+
+            while (is(this.peek())) this.advance();
+
+            if (this.peek().toLowerCase() === "e" && is(this.peekNext())) {
+                this.advance(), this.advance();
+
+                while (is(this.peek())) this.advance();
+            }
+        } else {
             while (this.isDigit(this.peek())) this.advance();
+
+            if (this.peek() === "." && this.isDigit(this.peekNext())) {
+                this.advance();
+
+                while (this.isDigit(this.peek())) this.advance();
+            }
+
+            if (this.peek().toLowerCase() === "e" && this.isDigit(this.peekNext())) {
+                this.advance(), this.advance();
+
+                while (this.isDigit(this.peek())) this.advance();
+            }
         }
 
         this.addToken(TokenType.Number, Number(this.source.substring(this.start, this.current)));
@@ -160,6 +186,18 @@ export class Scanner {
 
     private isDigit(c: string) {
         return /^\d$/.test(c);
+    }
+
+    private isHexDigit(c: string) {
+        return /^[0-9a-fA-F]$/.test(c);
+    }
+
+    private isOctalDigit(c: string) {
+        return /^[0-7]$/.test(c);
+    }
+
+    private isBinaryDigit(c: string) {
+        return /^[01]$/.test(c);
     }
 
     private isAlpha(c: string) {
