@@ -41,6 +41,28 @@ export function nativebind<P extends object>(
     );
 }
 
+// turn a value into a value quo can use/represent
+export function toQuoResolvable(v: unknown): unknown {
+    if (
+        typeof v === "function" ||
+        typeof v === "number" ||
+        typeof v === "string" ||
+        typeof v === "boolean" ||
+        typeof v === "undefined" ||
+        v === null
+    )
+        return v ?? null;
+
+    if (typeof v === "bigint") return Number(v.toString());
+
+    if (Array.isArray(v)) return v.map((v) => toQuoResolvable(v));
+
+    if (typeof v === "object")
+        return new Map(Object.getOwnPropertyNames(v).map((k) => [k, toQuoResolvable(v[k as keyof typeof v])]));
+
+    throw new QuoBindingError(`Cannot convert ${v} to a value Quo can use.`);
+}
+
 export function bindings(stdlib: typeof std.stdlib, lib: unknown, name = "") {
     if (lib === null || typeof lib === "undefined")
         return name ? stdlib.set(name, null) : error("Cannot convert nullish value to bindings.");
