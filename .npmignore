@@ -3,5 +3,7 @@ docs/
 spec/
 test/
 examples/
+extension/
 quo.png
 tsconfig.json
+.prettierrc.json
