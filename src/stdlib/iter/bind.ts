@@ -21,7 +21,7 @@ export function bindpredicatebased(method: keyof [] & string) {
     Reflect.deleteProperty(fn, "name");
 
     Reflect.defineProperty(fn, "name", {
-        value: method,
+        value: method.toLowerCase(),
         enumerable: false,
         configurable: false,
         writable: false,
