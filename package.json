@@ -1,5 +1,5 @@
 {
-    "name": "@cursorsdottsx/quo",
+    "name": "@kelsny/quo",
     "version": "0.0.1",
     "description": "An interpreted Lisp-like scripting language for data processing.",
     "main": "./dist/index.js",
@@ -17,7 +17,7 @@
     "keywords": [
         "quo"
     ],
-    "author": "cursorsdottsx <cursors.dev@gmail.com>",
+    "author": "kelsny <cursors.owo.uwu@gmail.com>",
     "license": "GPL-3.0",
     "devDependencies": {
         "@types/chai": "^4.3.0",
@@ -32,12 +32,12 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/cursorsdottsx/quo.git"
+        "url": "git+https://github.com/kelsny/quo.git"
     },
     "bugs": {
-        "url": "https://github.com/cursorsdottsx/quo/issues"
+        "url": "https://github.com/kelsny/quo/issues"
     },
-    "homepage": "https://github.com/cursorsdottsx/quo#readme",
+    "homepage": "https://github.com/kelsny/quo#readme",
     "config": {
         "commitizen": {
             "path": "./node_modules/cz-conventional-changelog"
