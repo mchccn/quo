@@ -1,6 +1,6 @@
 ## The Quo Language Specification
 
-This is the full language specification for Quo. For documentation see cursorsdottsx.github.io/quo.
+This is the full language specification for Quo. For documentation see kelsny.github.io/quo.
 
 ### Notation
 

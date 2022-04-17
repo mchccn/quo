@@ -1,7 +1,7 @@
 ![Quo](./quo.png)
 
 <div align="center">
-        <h2>@cursorsdottsx/quo</h2>
+        <h2>@kelsny/quo</h2>
         <p>An interpreted Lisp-like scripting language for data processing.</p>
         <img src="https://forthebadge.com/images/badges/built-with-love.svg" />
         <img src="https://forthebadge.com/images/badges/made-with-typescript.svg" />
@@ -36,23 +36,23 @@ Well my friend, it's the same as any other language: install, learn, use.
 **Installation**
 
 ```bash
-$ npm install @cursorsdottsx/quo -g
+$ npm install @kelsny/quo -g
 ```
 
 ```bash
-$ yarn global add @cursorsdottsx/quo
+$ yarn global add @kelsny/quo
 ```
 
 **Learn**
 
 Luckily, Quo is very easy to pick up and learn, just like Lisp.
-If you aren't familiar with Lisp syntax, refer to the [documentation](https://cursorsdottsx.github.io/quo). There are also some examples in the [`spec/`](./spec/README.md) folder as well, if you want to learn by example.
+If you aren't familiar with Lisp syntax, refer to the [documentation](https://kelsny.github.io/quo). There are also some examples in the [`spec/`](./spec/README.md) folder as well, if you want to learn by example.
 
 **Use**
 
 Quo comes with a CLI, but you can of course also use it programmatically.
 
-CLI documentation is available [here](https://cursorsdottsx.github.io/quo/cli), or you can run this to figure it out for yourself.
+CLI documentation is available [here](https://kelsny.github.io/quo/cli), or you can run this to figure it out for yourself.
 
 ```
 $ quo help
@@ -61,20 +61,22 @@ $ quo help
 The programmatic way is to import the library like so:
 
 ```ts
-import { execute } from "@cursorsdottsx/quo";
+import { execute } from "@kelsny/quo";
 
-execute("main", `
+execute(
+    "main",
+    `
     (print "hello world")
 `
 );
 ```
 
-For the full public API, please see [this](https://cursorsdottsx.github.io/quo/api) page.
+For the full public API, please see [this](https://kelsny.github.io/quo/api) page.
 
 ### Help
 
 Something not working correctly? Interpreter bugs, strange errors, and expectations not being met?
-Either open an [issue](https://github.com/cursorsdottsx/quo/issues/new) or better yet, a [pull request](https://github.com/cursorsdottsx/quo/pulls/new) to fix it!
+Either open an [issue](https://github.com/kelsny/quo/issues/new) or better yet, a [pull request](https://github.com/kelsny/quo/pulls/new) to fix it!
 _Still_ having trouble? Contact me on Discord and we'll have a chat!
 
 ### Contributing

@@ -49,7 +49,7 @@ If there is a bug in your program, it's a good idea to review the above ideas.
 If you haven't already, install Quo; it's an NPM package.
 
 ```
-$ npm install @cursorsdottsx/quo -g # Or yarn global add @cursorsdottsx/quo
+$ npm install @kelsny/quo -g # Or yarn global add @kelsny/quo
 ```
 
 Right then, now let's open any editor you'd like and edit a new file `main.quo`.
@@ -675,4 +675,4 @@ Got any suggestions, issues, or comments? There's always our GitHub repo!
 
 Thanks for taking some time to look at our wonderful language, Quo!
 
-~ cursorsdottsx <3
+~ kelsny <3
