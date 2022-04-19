@@ -5,6 +5,10 @@
  *
  * ? Make CLI
  *
+ * Language
+ * - Make 'throw' actually work
+ * - Support escapes in strings
+ *
  * Examples
  * - Make more
  * - Fibonacci recursive breaks... some fucking way...
