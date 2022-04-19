@@ -34,5 +34,13 @@
                 "path": "./syntaxes/quo.tmLanguage.json"
             }
         ]
-    }
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kelsny/quo.git"
+    },
+    "bugs": {
+        "url": "https://github.com/kelsny/quo/issues"
+    },
+    "homepage": "https://github.com/kelsny/quo#readme"
 }
