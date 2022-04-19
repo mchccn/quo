@@ -1,5 +1,6 @@
 {
     "name": "quo",
+    "publisher": "kelsny",
     "displayName": "Quo Language Support",
     "description": "Adds language support for Quo in VSCode.",
     "version": "0.0.1",

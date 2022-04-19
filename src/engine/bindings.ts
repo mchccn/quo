@@ -17,27 +17,28 @@ export function nativebind<P extends object>(
         Object.getOwnPropertyNames(prototype)
             .filter((k) => lib.includes(k as keyof P) && typeof prototype[k as keyof typeof prototype] === "function")
             .map((k) => [k.toLowerCase(), Reflect.get(prototype, k)] as [string, Function])
-            .map(
-                ([k, v]) => (
-                    Reflect.deleteProperty(v, "name"),
-                    Reflect.defineProperty(v, "name", {
-                        value: k,
-                        configurable: false,
-                        writable: false,
-                        enumerable: false,
-                    }),
-                    [
-                        k,
-                        function (this: Interpreter, ...args: Expr[]) {
-                            const [target, ...a] = args.map(this.evaluate.bind(this));
+            .map(([k, v]) => {
+                const fn = function (this: Interpreter, ...args: Expr[]) {
+                    const [target, ...a] = args.map(this.evaluate.bind(this));
 
-                            validate.call(this, target, args[0]);
+                    validate.call(this, target, args[0]);
 
-                            return v.apply(target, a);
-                        },
-                    ]
-                )
-            )
+                    return v.apply(target, a);
+                };
+
+                Reflect.deleteProperty(fn, "name");
+
+                Reflect.defineProperty(fn, "name", {
+                    value: k,
+                    configurable: false,
+                    writable: false,
+                    enumerable: false,
+                });
+
+                (fn as any).native = true;
+
+                return [k, fn];
+            })
     );
 }
 

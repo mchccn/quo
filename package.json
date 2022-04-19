@@ -1,6 +1,6 @@
 {
     "name": "@kelsny/quo",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "An interpreted Lisp-like scripting language for data processing.",
     "main": "./dist/index.js",
     "bin": {

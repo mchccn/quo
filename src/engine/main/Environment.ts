@@ -73,6 +73,12 @@ export class Environment {
         return environment;
     }
 
+    public clear() {
+        this.map = new Map();
+
+        return this;
+    }
+
     public fill(entries: [string, unknown][]) {
         for (const [key, value] of entries) {
             this.map.set(key, value);

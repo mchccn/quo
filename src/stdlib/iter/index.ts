@@ -21,7 +21,9 @@ export const lib = Object.assign(
             Array,
             ["at", "copyWithin", "flat", "fill", "includes", "splice", "sort", "slice", "toString"],
             function (target, expr) {
-                if (!Array.isArray(target)) throw new QuoTypeError(this, expr.token, `Targe tmust be a list.`);
+                if (!expr) throw new QuoTypeError(this, this.callstack[0].token, `Expected a list.`);
+
+                if (!Array.isArray(target)) throw new QuoTypeError(this, expr.token, `Target must be a list.`);
             }
         ),
         ["length", length],

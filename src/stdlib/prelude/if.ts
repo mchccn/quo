@@ -6,7 +6,12 @@ export const lib = (defstdfn: typeof _) =>
     defstdfn("if", function (...args) {
         const [condition, truthy, falsey, ...then] = args;
 
-        if (this.istruthy(this.evaluate(condition))) return this.evaluate(truthy);
+        if (this.istruthy(this.evaluate(condition)))
+            try {
+                return this.evaluate(truthy);
+            } finally {
+                then.map(this.evaluate.bind(this));
+            }
 
         if (falsey instanceof SymbolExpr) {
             if (falsey.token.lexeme !== "elif" && falsey.token.lexeme !== "else")

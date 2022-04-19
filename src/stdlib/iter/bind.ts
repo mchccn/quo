@@ -27,5 +27,7 @@ export function bindpredicatebased(method: keyof [] & string) {
         writable: false,
     });
 
+    (fn as any).native = true;
+
     return [method.toLowerCase(), fn] as [string, (this: Interpreter, ...args: Expr[]) => unknown];
 }

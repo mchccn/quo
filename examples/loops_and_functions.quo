@@ -1,9 +1,21 @@
 ; Loops and functions (recursion) :
 
 (defn fib (n) (
-    (if (<= n 2)
-        (1)
-        (+ (fib (- n 1)) (fib (- n 2))))
+    (if (<= n 2) (1) (
+        (def a 1)
+        (def b 0)
+        (for (def i 0) (< i n) (inc i) (
+            (def t b)
+            (set b (+ a b))
+            (set a t)
+        ))
+        b
+    ))
+))
+
+(defn fib_rec (n) (
+    (print n)
+    (if (<= n 2) (1) (+ (fib_rec (- n 1)) (fib_rec (- n 2))))
 ))
 
 (defn factorial (n) (
@@ -24,7 +36,9 @@ You can also iterate over lists with:
 The keyword 'of' can be exchanged with 'in' freely, too.
 ;;;
 
+(print (fib_rec 5))
+
 (for (def i 1) (<= i 10) (inc i) (
-    (print "fib:" (fib i))
-    (print "factorial:" (factorial i))
+    ; (print "fib:" i (fib_rec i))
+    ; (print "factorial:" (factorial i))
 ))

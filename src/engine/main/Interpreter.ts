@@ -1,4 +1,4 @@
-import { QuoAssertionError, QuoReferenceError, QuoRuntimeError, QuoTypeError } from "../../priv/error";
+import { QuoAssertionError, QuoReferenceError, QuoRuntimeError, QuoSyntaxError, QuoTypeError } from "../../priv/error";
 import { wraplexeme } from "../executils";
 import { Environment } from "./Environment";
 import { Expr, ExprVisitor, ListExpr, LiteralExpr, SymbolExpr } from "./Expr";
@@ -191,6 +191,8 @@ export class Interpreter implements ExprVisitor<unknown> {
         const path = expr.token.lexeme.split(":");
 
         if (path.length === 1) return this.environment.get(expr.token);
+
+        if (path.some((c) => !c)) throw new QuoSyntaxError(this.source, expr.token, `Missing member name in access.`);
 
         const previous = this.environment;
 

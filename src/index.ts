@@ -5,25 +5,18 @@
  *
  * ? Make CLI
  *
+ * Examples
+ * - Make more
+ * - Fibonacci recursive breaks... some fucking way...
+ *
+ * Tutorial
+ * - Update to match current specs
+ *
+ * Repl
+ * - Does not retain past definitions
+ *
  * UI/UX
  * - Package manager
- *
- * Bindings
- * - Networking
  */
 
-throw new ReferenceError(`
-Wrong move there bud.
-
-There's nothing here.
-
-Nothing to see here.
-
-Only the dead can see it.
-
-Unless you're a god.
-
-But you're not.
-
-Go away.
-`);
+export {};
