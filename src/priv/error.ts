@@ -51,6 +51,8 @@ export class QuoRuntimeError extends Error {
     }
 }
 
+export class QuoThrownError extends QuoRuntimeError {}
+
 export class QuoTypeError extends Error {
     public name = "TypeError";
 

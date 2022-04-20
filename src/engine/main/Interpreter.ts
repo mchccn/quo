@@ -1,4 +1,11 @@
-import { QuoAssertionError, QuoReferenceError, QuoRuntimeError, QuoSyntaxError, QuoTypeError } from "../../priv/error";
+import {
+    QuoAssertionError,
+    QuoReferenceError,
+    QuoRuntimeError,
+    QuoSyntaxError,
+    QuoThrownError,
+    QuoTypeError,
+} from "../../priv/error";
 import { wraplexeme } from "../executils";
 import { Environment } from "./Environment";
 import { Expr, ExprVisitor, ListExpr, LiteralExpr, SymbolExpr } from "./Expr";
@@ -65,6 +72,10 @@ export class Interpreter implements ExprVisitor<unknown> {
 
                     try {
                         return fn.apply(this, body);
+                    } catch (err) {
+                        if (err instanceof QuoThrownError) {
+                            throw err;
+                        }
                     } finally {
                         this.callstack.shift();
                     }
