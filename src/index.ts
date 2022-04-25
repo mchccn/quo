@@ -6,7 +6,6 @@
  * ? Make CLI
  *
  * Language
- * - Make 'throw' actually work
  * - Support escapes in strings
  *
  * Examples

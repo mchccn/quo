@@ -1,5 +1,6 @@
 import { QuoSyntaxError } from "../../priv/error";
 import { Token, TokenType } from "./Token";
+import unraw from "unraw";
 
 export class Scanner {
     private static keywords = new Map([
@@ -109,7 +110,7 @@ export class Scanner {
 
         this.advance();
 
-        this.addToken(TokenType.String, this.source.substring(this.start + 1, this.current - 1));
+        this.addToken(TokenType.String, unraw(this.source.substring(this.start + 1, this.current - 1)));
     }
 
     private number() {

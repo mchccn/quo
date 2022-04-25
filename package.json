@@ -13,7 +13,9 @@
         "deploy": "cd docs && yarn deploy && cd ..",
         "format": "prettier --write . && tsc --pretty"
     },
-    "dependencies": {},
+    "dependencies": {
+        "unraw": "^2.0.1"
+    },
     "keywords": [
         "quo"
     ],
